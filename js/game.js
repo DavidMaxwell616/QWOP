@@ -4,8 +4,6 @@ var game = new Phaser.Game(800, 500, Phaser.BOX2D, 'phaser-example',
   update: update, 
   render: render });
 
-
-
 function create() {
  
   game.stage.backgroundColor = '#124184';
@@ -32,11 +30,11 @@ function create() {
   var color = "#ffffff";
   
   keyState = ''; 
-  bestDistText = drawText('Best Distance: ' + Math.floor(farthestDistTraveled) + ' m',50,30,font,color);
-  timeText = drawText('Time Elapsed: ' + Math.round(elapsedTime*10)/10 + ' s',300,30,font, color);
-  totalDistText = drawText('Total Distance: ' + Math.floor(totalDistTraveled) + ' m',50,60,font, color);
-  velocityText = drawText('Velocity: ' + Math.round(10*curVelX)/10 + ' m/s',300,60,font, color);
-  KeyStateText = drawText('Keystate: ' + keyState,50,90,font,color);
+  bestDistText = drawText('Best Distance: ' + Math.floor(farthestDistTraveled) + ' m',160,20,font,color);
+  timeText = drawText('Time Elapsed: ' + Math.round(elapsedTime*10)/10 + ' s',450,20,font, color);
+  totalDistText = drawText('Total Distance: ' + Math.floor(totalDistTraveled) + ' m',160,60,font, color);
+  velocityText = drawText('Velocity: ' + Math.round(10*curVelX)/10 + ' m/s',450,60,font, color);
+  KeyStateText = drawText('Keystate: ' + keyState,160,100,font,color);
   
   farthestDistTraveled = localStorage.getItem(localStorageName) == null ? 0 :
   localStorage.getItem(localStorageName);
@@ -64,7 +62,12 @@ function create() {
   SpaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   SpaceKey.onDown.add(function(event) {
     handleSpacePressed();}, this);  
-    
+    Q = game.add.image(20, 20, 'q');
+    w = game.add.image(80, 20, 'w');
+    o = game.add.image(670, 20, 'o');
+    p = game.add.image(730, 20, 'p');
+    marker1 = game.add.image(200, 400, 'marker');
+
     now = new Date().getTime();
 
 }
@@ -151,6 +154,7 @@ function handleSpacePressed(){
 }
 
 function createBodiesAndJoints(){
+  upperLeftArm = game.add.sprite(originX, originY, 'upperArm');
 
 upperLeftArm = game.add.sprite(originX, originY, 'upperArm');
 game.physics.box2d.enable(upperLeftArm);

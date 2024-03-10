@@ -16,6 +16,11 @@ this.load.path = '../assets/images/';
   this.load.image('leg', 'lower_leg.png');
   this.load.image('head', 'head.png');
   this.load.image('foot', 'foot.png');
+  this.load.image('marker', 'marker.png');
+  this.load.image('q', 'q.png');
+  this.load.image('w', 'w.png');
+  this.load.image('o', 'o.png');
+  this.load.image('p', 'p.png');
  this.load.start();
 
 }
