@@ -11,7 +11,8 @@ function create() {
   background.anchor.setTo(0, 0);
   background.width = CANVAS_WIDTH;
   background.height = CANVAS_HEIGHT;
-
+  game.add.image(game.world.width-100,game.world.height-100, 'maxxdaddy');
+  marker1 = game.add.image(200, 400, 'marker');
   // Enable Box2D physics
   game.physics.startSystem(Phaser.Physics.BOX2D);
   
@@ -62,13 +63,13 @@ function create() {
   SpaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   SpaceKey.onDown.add(function(event) {
     handleSpacePressed();}, this);  
-    Q = game.add.image(20, 20, 'q');
-    w = game.add.image(80, 20, 'w');
-    o = game.add.image(670, 20, 'o');
-    p = game.add.image(730, 20, 'p');
-    marker1 = game.add.image(200, 400, 'marker');
 
-    now = new Date().getTime();
+  Q = game.add.button(20,20, 'q', handleQPressed);
+  w = game.add.button(80, 20, 'w', handleWPressed);
+  o = game.add.button(670, 20, 'o', handleOPressed);
+  p = game.add.button(730, 20, 'p', handlePPressed);
+
+  now = new Date().getTime();
 
 }
 
@@ -154,8 +155,6 @@ function handleSpacePressed(){
 }
 
 function createBodiesAndJoints(){
-  upperLeftArm = game.add.sprite(originX, originY, 'upperArm');
-
 upperLeftArm = game.add.sprite(originX, originY, 'upperArm');
 game.physics.box2d.enable(upperLeftArm);
 upperLeftArm.body.setRectangle(25, 80, 0, 0, 0);
@@ -188,14 +187,13 @@ rightFoot = game.add.sprite(originX, originY+200, 'foot');
 game.physics.box2d.enable(rightFoot);
 rightFoot.body.setRectangle(50, 15, 0, 0, 0);
 
+body = game.add.sprite(originX, originY, 'body');
+game.physics.box2d.enable(body);
+body.body.setRectangle(50, 140, 0, 0, 0);
 
 rightThigh = game.add.sprite(originX, originY, 'thigh');
 game.physics.box2d.enable(rightThigh);
 rightThigh.body.setRectangle(25, 80, 0, 0, 0);
-
-body = game.add.sprite(originX, originY, 'body');
-game.physics.box2d.enable(body);
-body.body.setRectangle(50, 140, 0, 0, 0);
 
 lowerRightArm = game.add.sprite(originX, originY, 'lowerArm');
 game.physics.box2d.enable(lowerRightArm);
