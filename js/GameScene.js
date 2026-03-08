@@ -1,7 +1,7 @@
 import { Runner } from "./Runner.js";
 
 const pl = planck;
-const SCALE = 80;
+const SCALE = 120;
 const W = 1100;
 const H = 620;
 
@@ -62,7 +62,7 @@ export class GameScene extends Phaser.Scene {
         const ground = this.planckWorld.createBody();
         const pts = [];
         for (let i = 0; i <= this.worldWidth; i += 2) {
-            const y = 7 + Math.sin(i * 0.16) * 0.08 + Math.sin(i * 0.055) * 0.14;
+            const y = 4.6 + Math.sin(i * 0.16) * 0.08 + Math.sin(i * 0.055) * 0.14;
             pts.push(pl.Vec2(i, y));
         }
 
@@ -76,21 +76,21 @@ export class GameScene extends Phaser.Scene {
     }
 
     createRunner() {
-        this.runner = new Runner(this, this.planckWorld, 6.5, 5.15);
+        this.runner = new Runner(this, this.planckWorld, 6.5, 3);
     }
 
     createUi() {
-        this.distanceText = this.add.text(16, 80, 'Distance: 0.00 m', {
+        this.distanceText = this.add.text(430, 130, 'Distance: 0.00 m', {
             fontFamily: 'Arial',
             fontSize: '24px',
-            color: '#0f172a',
+            color: '#ffffff',
             fontStyle: 'bold'
         }).setScrollFactor(0);
 
-        this.tipText = this.add.text(16, 110, 'Lean into alternating keys. Falling is expected.', {
+        this.tipText = this.add.text(390, 160, 'Lean into alternating keys. Falling is expected.', {
             fontFamily: 'Arial',
             fontSize: '16px',
-            color: '#1e293b'
+            color: '#ffffff'
         }).setScrollFactor(0);
     }
 
@@ -102,6 +102,10 @@ export class GameScene extends Phaser.Scene {
             P: Phaser.Input.Keyboard.KeyCodes.P,
             R: Phaser.Input.Keyboard.KeyCodes.R
         });
+        this.Qbutton = this.add.image(60, 60, 'q').setInteractive().setScrollFactor(0).setOrigin(.5);
+        this.Wbutton = this.add.image(130, 60, 'w').setInteractive().setScrollFactor(0).setOrigin(.5);
+        this.Obutton = this.add.image(950, 60, 'o').setInteractive().setScrollFactor(0).setOrigin(.5);
+        this.Pbutton = this.add.image(1020, 60, 'p').setInteractive().setScrollFactor(0).setOrigin(.5);
     }
 
     update() {

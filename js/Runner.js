@@ -1,5 +1,5 @@
 const pl = planck;
-const SCALE = 80;
+const SCALE = 120;
 const CATEGORY_GROUND = 0x0001;
 const CATEGORY_RUNNER = 0x0002;
 
@@ -53,8 +53,9 @@ export class Runner {
             filterMaskBits: CATEGORY_GROUND | CATEGORY_RUNNER
         });
 
-        const sprite = this.scene.add.rectangle(0, 0, w * SCALE, h * SCALE, opts.color || 0xdbeafe);
-        sprite.setStrokeStyle(2, 0x0f172a, 1);
+        // const sprite = this.scene.add.rectangle(0, 0, w * SCALE, h * SCALE, opts.color || 0xdbeafe);
+        // sprite.setStrokeStyle(2, 0x0f172a, 1);
+        const sprite = this.scene.add.image(0, 0, key).setDisplaySize(w * SCALE, h * SCALE);
         sprite.setOrigin(0.5);
 
         this.bodies[name] = body;
@@ -68,7 +69,7 @@ export class Runner {
         const headS = 0.28;
         const upperLegW = 0.16, upperLegH = 0.48;
         const lowerLegW = 0.14, lowerLegH = 0.50;
-        const footW = 0.24, footH = 0.09;
+        const footW = 0.34, footH = 0.09;
         const upperArmW = 0.13, upperArmH = 0.38;
         const lowerArmW = 0.12, lowerArmH = 0.38;
 
@@ -79,7 +80,7 @@ export class Runner {
         });
 
         const head = this.world.createDynamicBody({
-            position: pl.Vec2(x, y - 1.55),
+            position: pl.Vec2(x, y - 1.45),
             linearDamping: 0.15,
             angularDamping: 1.0
         });
@@ -93,19 +94,19 @@ export class Runner {
         this.bodies.head = head;
         // const headSprite = this.scene.add.circle(0, 0, headS * SCALE * 0.5, 0xf8fafc);
         // headSprite.setStrokeStyle(2, 0x0f172a, 1);
-        const headSprite = this.scene.add.image(0, 0, 'head');
+        const headSprite = this.scene.add.image(0, 0, 'head').setDisplaySize(headS * SCALE, headS * SCALE);
         this.sprites.head = headSprite;
 
-        this.createPart('leftUpperLeg', 'thigh', x - 0.14, y - 0.34, upperLegW, upperLegH, { density: 1.5, color: 0xf59e0b });
-        this.createPart('rightUpperLeg', 'thigh', x + 0.14, y - 0.34, upperLegW, upperLegH, { density: 1.5, color: 0xf59e0b });
-        this.createPart('leftLowerLeg', 'lower_leg', x - 0.14, y + 0.16, lowerLegW, lowerLegH, { density: 1.2, color: 0xfbbf24 });
-        this.createPart('rightLowerLeg', 'lower_leg', x + 0.14, y + 0.16, lowerLegW, lowerLegH, { density: 1.2, color: 0xfbbf24 });
-        this.createPart('leftFoot', 'foot', x - 0.14, y + 0.48, footW, footH, { density: 0.75, friction: 0.95, angularDamping: 0.45, color: 0x334155 });
-        this.createPart('rightFoot', 'foot', x + 0.14, y + 0.48, footW, footH, { density: 0.75, friction: 0.95, angularDamping: 0.45, color: 0x334155 });
-        this.createPart('leftUpperArm', 'upper_arm', x - 0.28, y - 1.0, upperArmW, upperArmH, { density: 0.8, color: 0x10b981 });
-        this.createPart('rightUpperArm', 'upper_arm', x + 0.28, y - 1.0, upperArmW, upperArmH, { density: 0.8, color: 0x10b981 });
-        this.createPart('leftLowerArm', 'lower_arm', x - 0.28, y - 0.62, lowerArmW, lowerArmH, { density: 0.7, color: 0x34d399 });
-        this.createPart('rightLowerArm', 'lower_arm', x + 0.28, y - 0.62, lowerArmW, lowerArmH, { density: 0.7, color: 0x34d399 });
+        this.createPart('leftUpperLeg', 'thigh', x, y - 0.44, upperLegW, upperLegH, { density: 1.5, color: 0xf59e0b });
+        this.createPart('rightUpperLeg', 'thigh', x, y - 0.44, upperLegW, upperLegH, { density: 1.5, color: 0xf59e0b });
+        this.createPart('leftLowerLeg', 'lower_leg', x, y, lowerLegW, lowerLegH, { density: 1.2, color: 0xfbbf24 });
+        this.createPart('rightLowerLeg', 'lower_leg', x, y, lowerLegW, lowerLegH, { density: 1.2, color: 0xfbbf24 });
+        this.createPart('leftFoot', 'foot', x, y, footW, footH, { density: 0.75, friction: 0.95, angularDamping: 0.45, color: 0x334155 });
+        this.createPart('rightFoot', 'foot', x, y, footW, footH, { density: 0.75, friction: 0.95, angularDamping: 0.45, color: 0x334155 });
+        this.createPart('leftUpperArm', 'upper_arm', x, y - 1.0, upperArmW, upperArmH, { density: 0.8, color: 0x10b981 });
+        this.createPart('rightUpperArm', 'upper_arm', x, y - 1.0, upperArmW, upperArmH, { density: 0.8, color: 0x10b981 });
+        this.createPart('leftLowerArm', 'lower_arm', x, y - 0.62, lowerArmW, lowerArmH, { density: 0.7, color: 0x34d399 });
+        this.createPart('rightLowerArm', 'lower_arm', x, y - 0.62, lowerArmW, lowerArmH, { density: 0.7, color: 0x34d399 });
 
         // Neck
         this.joints.neck = this.world.createJoint(pl.RevoluteJoint({
