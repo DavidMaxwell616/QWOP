@@ -2,21 +2,63 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QWOP Runner</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
-    <script type="module" src="js/Main.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QWOP Style Phaser + Planck</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a;
+            color: #e5e7eb;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .hud {
+            position: fixed;
+            left: 14px;
+            top: 12px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px 12px;
+            line-height: 1.4;
+            font-size: 14px;
+            pointer-events: none;
+            max-width: 390px;
+        }
+
+        .hud b {
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>🏃 QWOP RUNNER</h1>
-    <div id="game-container"></div>
-    <div class="instructions">
-        <p>Try to reach 100 meters without falling!</p>
+    <div id="game"></div>
+    <div class="hud">
+        <div><b>QWOP-style runner</b></div>
+        <div>Q / W = hips</div>
+        <div>O / P = knees</div>
+        <div>R = reset</div>
+        <div>Goal: stumble your way to the right.</div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/planck-js@0.3.31/dist/planck.min.js"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script>
+
+
+    </script>
 </body>
 
 </html>

@@ -1,343 +1,130 @@
-import { SpriteAssets } from "./SpriteAssets.js";
+import { Runner } from "./Runner.js";
 
-export default class GameScene extends Phaser.Scene {
+const pl = planck;
+const SCALE = 80;
+const W = 1100;
+const H = 620;
+
+const CATEGORY_GROUND = 0x0001;
+const CATEGORY_RUNNER = 0x0002;
+
+export class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
-        this.runner = null;
-        this.distance = 0;
-        this.distanceText = null;
-        this.keys = {};
-        this.ground = null;
-        this.finishLine = 100;
-        this.height = 0;
-        this.width = 0;
     }
-
     preload() {
-        // Create sprite textures programmatically
-        const textures = {
-            torso: SpriteAssets.createCanvas(20, 60, '#FF6B6B'),
-            head: SpriteAssets.createCircle(15, '#FFD93D'),
-            upperArm: SpriteAssets.createCanvas(10, 40, '#FF9F9F'),
-            forearm: SpriteAssets.createCanvas(8, 35, '#FFB6B6'),
-            thigh: SpriteAssets.createCanvas(12, 50, '#6BCB77'),
-            calf: SpriteAssets.createCanvas(10, 50, '#4D96FF'),
-            foot: SpriteAssets.createCanvas(25, 10, '#2C3E50'),
-            ground: SpriteAssets.createCanvas(100, 40, '#8B7355')
-        };
+        this.load.setPath('assets/images');
+        this.load.image('head', 'head.png');
+        this.load.image('lower_arm', 'lower_arm.png');
+        this.load.image('upper_arm', 'upper_arm.png');
+        this.load.image('thigh', 'thigh.png');
+        this.load.image('lower_leg', 'lower_leg.png');
+        this.load.image('torso', 'torso.png');
+        this.load.image('foot', 'foot.png');
 
-        // Load textures into Phaser
-        for (let key in textures) {
-            this.textures.addBase64(key, textures[key]);
-        }
+        this.load.image('q', 'q.png');
+        this.load.image('w', 'w.png');
+        this.load.image('o', 'o.png');
+        this.load.image('p', 'p.png');
+
+        this.load.image('background_slice', 'background_slice.png');
+        this.load.image('marker', 'marker.png');
+        this.load.image('ground', 'ground.png');
+
+        this.load.image('maxxdaddy', 'maxxdaddy.jpg');
     }
 
     create() {
-        this.height = this.game.config.height;
-        this.width = this.game.config.witdh;
-        this.matter.world.setBounds(0, 0, 2000, this.height);
-        //this.matter.world.setGravity(0, 2);
+        this.cameras.main.setBackgroundColor('#539df0');
 
-        // Create ground using sprite
-        for (let i = 0; i < 20; i++) {
-            const groundPiece = this.matter.add.sprite(i * 100 + 50, this.height - 20, 'ground', null, {
-                isStatic: true,
-                friction: 0.8
-            });
-            groundPiece.setDisplaySize(100, 40);
+        this.worldWidth = 140;
+        this.planckWorld = new pl.World({ gravity: pl.Vec2(0, 24) });
+
+        this.drawBackground();
+        this.createGround();
+        this.createRunner();
+        this.createUi();
+        this.createInput();
+
+        this.cameras.main.setBounds(0, 0, this.worldWidth * SCALE, H);
+    }
+
+    drawBackground() {
+        for (let index = 0; index < this.worldWidth * SCALE; index++) {
+            this.add.image(index, 0, 'background_slice').setDisplaySize(1, H).setOrigin(0, 0);
+        }
+        for (let index = 1000; index < this.worldWidth * SCALE; index += 1000) {
+            this.add.image(index, 503, 'marker').setOrigin(0, 0);
+        }
+    }
+
+    createGround() {
+        const ground = this.planckWorld.createBody();
+        const pts = [];
+        for (let i = 0; i <= this.worldWidth; i += 2) {
+            const y = 7 + Math.sin(i * 0.16) * 0.08 + Math.sin(i * 0.055) * 0.14;
+            pts.push(pl.Vec2(i, y));
         }
 
-        // Create finish line
-        const finish = this.add.rectangle(this.finishLine * 10, 300, 5, 300, 0xFF0000);
-        finish.setOrigin(0.5, 0.5);
-
-        // Create track markers every 10m
-        for (let i = 0; i <= 10; i++) {
-            this.add.text(i * 100, this.height - 60, `${i * 10}m`, {
-                fontSize: '14px',
-                color: '#fff'
+        for (let i = 0; i < pts.length - 1; i++) {
+            ground.createFixture(pl.Edge(pts[i], pts[i + 1]), {
+                friction: 1.35,
+                filterCategoryBits: CATEGORY_GROUND,
+                filterMaskBits: CATEGORY_RUNNER
             });
         }
+    }
 
-        // Create runner
-        this.createRunner(100, this.height - 200);
+    createRunner() {
+        this.runner = new Runner(this, this.planckWorld, 6.5, 5.15);
+    }
 
-        // Camera follow
-        this.cameras.main.setBounds(0, 0, 2000, this.height);
-        this.cameras.main.startFollow(this.runner.torso, true, 0.1, 0.1);
-
-        // Setup input
-        this.keys = {
-            Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-            O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),
-            P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
-            R: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
-        };
-
-        // UI
-        this.distanceText = this.add.text(16, 16, 'Distance: 0.0m', {
+    createUi() {
+        this.distanceText = this.add.text(16, 80, 'Distance: 0.00 m', {
+            fontFamily: 'Arial',
             fontSize: '24px',
-            fontFamily: 'Tacoma',
-            color: '#f83232',
-            backgroundColor: '#87CEEB',
-            padding: { x: 10, y: 5 }
+            color: '#0f172a',
+            fontStyle: 'bold'
         }).setScrollFactor(0);
 
-        this.add.text(16, 50, 'Q = Left Thigh | W = Left Calf | O = Right Thigh | P = Right Calf | R = Reset',
-            {
-                fontSize: '20px',
-                fontFamily: 'Tacoma',
-                color: '#f83232',
-                backgroundColor: '#87CEEB',
-                padding: { x: 10, y: 5 }
-            }).setScrollFactor(0);
-
-        this.resultText = this.add.text(400, 300, '', {
-            fontSize: '48px',
-            fontFamily: 'Tacoma',
-            color: '#f83232',
-            backgroundColor: '#87CEEB',
-            padding: { x: 20, y: 10 }
-        }).setOrigin(0.5).setScrollFactor(0).setVisible(false);
+        this.tipText = this.add.text(16, 110, 'Lean into alternating keys. Falling is expected.', {
+            fontFamily: 'Arial',
+            fontSize: '16px',
+            color: '#1e293b'
+        }).setScrollFactor(0);
     }
 
-    createRunner(x, y) {
-        // Torso
-        const torso = this.matter.add.sprite(x, y, 'torso', null, {
-            friction: 0.8,
-            density: 0.01
+    createInput() {
+        this.keys = this.input.keyboard.addKeys({
+            Q: Phaser.Input.Keyboard.KeyCodes.Q,
+            W: Phaser.Input.Keyboard.KeyCodes.W,
+            O: Phaser.Input.Keyboard.KeyCodes.O,
+            P: Phaser.Input.Keyboard.KeyCodes.P,
+            R: Phaser.Input.Keyboard.KeyCodes.R
         });
-
-        // Head
-        const head = this.matter.add.sprite(x, y - 40, 'head', null, {
-            friction: 0.8,
-            density: 0.005,
-            shape: 'circle'
-        });
-
-        // Left upper arm
-        const leftUpperArm = this.matter.add.sprite(x - 20, y - 10, 'upperArm', null, {
-            friction: 0.8,
-            density: 0.004
-        });
-
-        // Left forearm
-        const leftForearm = this.matter.add.sprite(x - 20, y + 20, 'forearm', null, {
-            friction: 0.8,
-            density: 0.003
-        });
-
-        // Right upper arm
-        const rightUpperArm = this.matter.add.sprite(x + 20, y - 10, 'upperArm', null, {
-            friction: 0.8,
-            density: 0.004
-        });
-
-        // Right forearm
-        const rightForearm = this.matter.add.sprite(x + 20, y + 20, 'forearm', null, {
-            friction: 0.8,
-            density: 0.003
-        });
-
-        // Left thigh
-        const leftThigh = this.matter.add.sprite(x - 5, y + 45, 'thigh', null, {
-            friction: 0.8,
-            density: 0.008
-        });
-
-        // Left calf
-        const leftCalf = this.matter.add.sprite(x - 5, y + 95, 'calf', null, {
-            friction: 0.8,
-            density: 0.006
-        });
-
-        // Right thigh
-        const rightThigh = this.matter.add.sprite(x + 5, y + 45, 'thigh', null, {
-            friction: 0.8,
-            density: 0.008
-        });
-
-        // Right calf
-        const rightCalf = this.matter.add.sprite(x + 5, y + 95, 'calf', null, {
-            friction: 0.8,
-            density: 0.006
-        });
-
-        // Left foot
-        const leftFoot = this.matter.add.sprite(x - 5, y + 125, 'foot', null, {
-            friction: 1.0,
-            density: 0.005
-        });
-
-        // Right foot
-        const rightFoot = this.matter.add.sprite(x + 5, y + 125, 'foot', null, {
-            friction: 1.0,
-            density: 0.005
-        });
-
-        // Connect head - use body references
-        this.matter.add.constraint(torso.body, head.body, 20, 0.8, {
-            pointA: { x: 0, y: -30 },
-            pointB: { x: 0, y: 10 }
-        });
-
-        // Arm constraints
-        this.matter.add.constraint(torso.body, leftUpperArm.body, 12, 0.5, {
-            pointA: { x: -10, y: -20 },
-            pointB: { x: 0, y: -20 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(leftUpperArm.body, leftForearm.body, 10, 0.5, {
-            pointA: { x: 0, y: 20 },
-            pointB: { x: 0, y: -17 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(torso.body, rightUpperArm.body, 12, 0.5, {
-            pointA: { x: 10, y: -20 },
-            pointB: { x: 0, y: -20 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(rightUpperArm.body, rightForearm.body, 10, 0.5, {
-            pointA: { x: 0, y: 20 },
-            pointB: { x: 0, y: -17 },
-            stiffness: 0.6
-        });
-
-        // Leg constraints
-        this.matter.add.constraint(torso.body, leftThigh.body, 15, 0.5, {
-            pointA: { x: -5, y: 30 },
-            pointB: { x: 0, y: -25 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(leftThigh.body, leftCalf.body, 15, 0.5, {
-            pointA: { x: 0, y: 25 },
-            pointB: { x: 0, y: -25 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(torso.body, rightThigh.body, 15, 0.5, {
-            pointA: { x: 5, y: 30 },
-            pointB: { x: 0, y: -25 },
-            stiffness: 0.6
-        });
-
-        this.matter.add.constraint(rightThigh.body, rightCalf.body, 15, 0.5, {
-            pointA: { x: 0, y: 25 },
-            pointB: { x: 0, y: -25 },
-            stiffness: 0.6
-        });
-
-        // Foot constraints (ankles)
-        this.matter.add.constraint(leftCalf.body, leftFoot.body, 10, 0.5, {
-            pointA: { x: 0, y: 25 },
-            pointB: { x: -8, y: 0 },
-            stiffness: 0.7
-        });
-
-        this.matter.add.constraint(rightCalf.body, rightFoot.body, 10, 0.5, {
-            pointA: { x: 0, y: 25 },
-            pointB: { x: -8, y: 0 },
-            stiffness: 0.7
-        });
-
-        this.runner = {
-            torso,
-            head,
-            leftUpperArm,
-            leftForearm,
-            rightUpperArm,
-            rightForearm,
-            leftThigh,
-            leftCalf,
-            leftFoot,
-            rightThigh,
-            rightCalf,
-            rightFoot
-        };
     }
-    resetRunner() {
-        // Destroy existing runner parts
-        if (this.runner) {
-            Object.values(this.runner).forEach(part => {
-                if (part && part.body) {
-                    this.matter.world.remove(part.body);
-                    part.destroy();
-                }
-            });
-        }
 
-        // Recreate runner at starting position
-        this.createRunner(100, 400);
-
-        // Reset camera to follow new runner
-        this.cameras.main.startFollow(this.runner.torso, true, 0.1, 0.1);
-
-        // Reset distance
-        this.distance = 0;
-        this.distanceText.setText('Distance: 0.0m');
-
-        // Hide result text
-        if (this.resultText) {
-            this.resultText.setVisible(false);
-        }
-    }
     update() {
-        if (!this.runner) return;
-
-        // Check for reset key
-        if (this.keys.R.isDown) {
-            this.resetRunner();
-            return;
+        if (Phaser.Input.Keyboard.JustDown(this.keys.R)) {
+            this.runner.reset();
         }
 
-        const torque = 0.015;
+        this.runner.updateControls(this.keys);
+        this.runner.stabilize();
 
-        // Q - Left thigh forward
-        if (this.keys.Q.isDown) {
-            this.runner.leftThigh.setAngularVelocity(-torque * 2);
+        const fixedTimeStep = 1 / 60;
+        this.planckWorld.step(fixedTimeStep, 8, 3);
+        this.runner.syncSprites();
+
+        const followX = Math.max(0, this.runner.bodies.torso.getPosition().x * SCALE - 280);
+        this.cameras.main.scrollX = Phaser.Math.Linear(this.cameras.main.scrollX, followX, 0.08);
+
+        this.distanceText.setText(`Distance: ${this.runner.distance.toFixed(2)} m`);
+
+        // Reset if the runner goes catastrophically out of control.
+        const torsoY = this.runner.bodies.torso.getPosition().y;
+        if (torsoY > 12) {
+            this.runner.reset();
         }
-
-        // W - Left calf forward
-        if (this.keys.W.isDown) {
-            this.runner.leftCalf.setAngularVelocity(-torque * 3);
-        }
-
-        // O - Right thigh forward
-        if (this.keys.O.isDown) {
-            this.runner.rightThigh.setAngularVelocity(-torque * 2);
-        }
-
-        // P - Right calf forward
-        if (this.keys.P.isDown) {
-            this.runner.rightCalf.setAngularVelocity(-torque * 3);
-        }
-
-        // Update distance
-        this.distance = Math.max(0, (this.runner.torso.body.position.x - 100) / 10);
-        this.distanceText.setText(`Distance: ${this.distance.toFixed(1)}m`);
-
-        // Check for failure (torso too low)
-        if (this.runner.torso.body.position.y > 520 && !this.resultText.visible) {
-            this.showResult('FAILED!');
-        }
-
-        // Check for success
-        if (this.distance >= this.finishLine && !this.resultText.visible) {
-            this.showResult('SUCCESS!');
-        }
-    }
-
-    showResult(text) {
-        this.resultText.setText(text);
-        this.resultText.setVisible(true);
-
-        this.time.delayedCall(2000, () => {
-            this.resetRunner();
-        });
     }
 }

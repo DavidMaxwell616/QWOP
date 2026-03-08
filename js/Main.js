@@ -1,18 +1,15 @@
-import GameScene from "./GameScene.js";
+const W = 1100;
+const H = 620;
+
+import { GameScene } from "./GameScene.js";
+
 const config = {
   type: Phaser.AUTO,
-  parent: 'game-container',
-  width: 800,
-  height: 500,
-  backgroundColor: '#87CEEB',
-  physics: {
-    default: 'matter',
-    matter: {
-      debug: false,
-      gravity: { y: .01 }
-    }
-  },
+  width: W,
+  height: H,
+  parent: 'game',
+  backgroundColor: '#93c5fd',
   scene: [GameScene]
 };
 
-const game = new Phaser.Game(config);
+new Phaser.Game(config);
