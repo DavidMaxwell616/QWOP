@@ -1,19 +1,19 @@
 import { Runner } from "./Runner.js";
+import {
+    originX, PPM, px2m, W, H, WALK_SPEED, SCALE, CATEGORY_GROUND,
+    MASK_GROUND, CATEGORY_BODYPARTS, MASK_BODYPARTS
+} from "./config.js";
 
 const pl = planck;
-const SCALE = 120;
-const W = 1100;
-const H = 620;
-
-const CATEGORY_GROUND = 0x0001;
-const CATEGORY_RUNNER = 0x0002;
 
 export class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
     }
+
     preload() {
         this.load.setPath('assets/images');
+
         this.load.image('head', 'head.png');
         this.load.image('lower_arm', 'lower_arm.png');
         this.load.image('upper_arm', 'upper_arm.png');
@@ -38,61 +38,131 @@ export class GameScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#539df0');
 
         this.worldWidth = 140;
-        this.planckWorld = new pl.World({ gravity: pl.Vec2(0, 24) });
+        this.world = new pl.World({
+            gravity: pl.Vec2(0, 24)
+        });
 
         this.drawBackground();
         this.createGround();
-        this.createRunner();
+        this.createRunner(); // ← now uses scale
         this.createUi();
         this.createInput();
 
         this.cameras.main.setBounds(0, 0, this.worldWidth * SCALE, H);
     }
 
+    makePartRect(key, xPx, yPx, wPx, hPx, density = 1.0, friction = 0.6, restitution = 0.1) {
+        const body = this.world.createBody({
+            type: "dynamic",
+            position: pl.Vec2(px2m(xPx), px2m(yPx)),
+            angle: 0,
+            linearDamping: 0.05,
+            angularDamping: 0.10
+        });
+
+        const fix = body.createFixture(pl.Box(px2m(wPx / 2), px2m(hPx / 2)), {
+            density, friction, restitution
+        });
+
+        // IMPORTANT: filter goes on the fixture
+        fix.setFilterData({
+            categoryBits: CATEGORY_BODYPARTS,
+            maskBits: MASK_BODYPARTS,
+            groupIndex: 0
+        });
+
+        const sprite = this.add.image(xPx, yPx, key).setOrigin(0.5);
+        sprite.setDisplaySize(wPx, hPx);
+        sprite._pbody = body;
+
+        return { body, sprite, fix };
+    }
+
     drawBackground() {
-        for (let index = 0; index < this.worldWidth * SCALE; index++) {
-            this.add.image(index, 0, 'background_slice').setDisplaySize(1, H).setOrigin(0, 0);
+        for (let i = 0; i < this.worldWidth * this.SCALE; i++) {
+            this.add.image(i, 0, 'background_slice')
+                .setDisplaySize(1, H)
+                .setOrigin(0, 0);
         }
-        for (let index = 1000; index < this.worldWidth * SCALE; index += 1000) {
-            this.add.image(index, 503, 'marker').setOrigin(0, 0);
+
+        for (let i = 1000; i < this.worldWidth * SCALE; i += 1000) {
+            this.add.image(i, 503, 'marker').setOrigin(0, 0);
         }
     }
 
+    // --------------------------------------------------
+    // GROUND
+    // --------------------------------------------------
+
     createGround() {
-        const ground = this.planckWorld.createBody();
+        const ground = this.world.createBody();
+
         const pts = [];
+
         for (let i = 0; i <= this.worldWidth; i += 2) {
-            const y = 4.6 + Math.sin(i * 0.16) * 0.08 + Math.sin(i * 0.055) * 0.14;
+            const y =
+                4.6 +
+                Math.sin(i * 0.16) * 0.08 +
+                Math.sin(i * 0.055) * 0.14;
+
             pts.push(pl.Vec2(i, y));
         }
 
         for (let i = 0; i < pts.length - 1; i++) {
-            ground.createFixture(pl.Edge(pts[i], pts[i + 1]), {
-                friction: 1.35,
-                filterCategoryBits: CATEGORY_GROUND,
-                filterMaskBits: CATEGORY_RUNNER
-            });
+            ground.createFixture(
+                pl.Edge(pts[i], pts[i + 1]),
+                {
+                    friction: 1.35,
+                    filterCategoryBits: CATEGORY_GROUND,
+                    filterMaskBits: CATEGORY_BODYPARTS
+                }
+            );
         }
     }
 
+    // --------------------------------------------------
+    // RUNNER (UPDATED HERE)
+    // --------------------------------------------------
+
     createRunner() {
-        this.runner = new Runner(this, this.planckWorld, 6.5, 3);
+        const RUNNER_SCALE = 2; // 🔥 double size
+
+        this.runner = new Runner(
+            this,
+            this.world,
+            6.5,
+            3,
+            RUNNER_SCALE
+        );
     }
 
+    // --------------------------------------------------
+    // UI
+    // --------------------------------------------------
+
     createUi() {
-        this.distanceText = this.add.text(430, 130, 'Distance: 0.00 m', {
+        this.distanceText = this.add.text(this.W / 2 - 100, 80, 'Distance: 0.00 m', {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
             fontStyle: 'bold'
         }).setScrollFactor(0);
 
-        this.tipText = this.add.text(390, 160, 'Lean into alternating keys. Falling is expected.', {
-            fontFamily: 'Arial',
-            fontSize: '16px',
-            color: '#ffffff'
-        }).setScrollFactor(0);
+        this.tipText = this.add.text(
+            this.add.text(W / 2),
+            110,
+            'Lean into alternating keys. Falling is expected.',
+            {
+                fontFamily: 'Arial',
+                fontSize: '16px',
+                color: '#ffffff'
+            }
+        ).setScrollFactor(0);
     }
+
+    // --------------------------------------------------
+    // INPUT
+    // --------------------------------------------------
 
     createInput() {
         this.keys = this.input.keyboard.addKeys({
@@ -100,35 +170,83 @@ export class GameScene extends Phaser.Scene {
             W: Phaser.Input.Keyboard.KeyCodes.W,
             O: Phaser.Input.Keyboard.KeyCodes.O,
             P: Phaser.Input.Keyboard.KeyCodes.P,
-            R: Phaser.Input.Keyboard.KeyCodes.R
+            R: Phaser.Input.Keyboard.KeyCodes.R,
+            SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
-        this.Qbutton = this.add.image(60, 60, 'q').setInteractive().setScrollFactor(0).setOrigin(.5);
-        this.Wbutton = this.add.image(130, 60, 'w').setInteractive().setScrollFactor(0).setOrigin(.5);
-        this.Obutton = this.add.image(950, 60, 'o').setInteractive().setScrollFactor(0).setOrigin(.5);
-        this.Pbutton = this.add.image(1020, 60, 'p').setInteractive().setScrollFactor(0).setOrigin(.5);
+
+        this.Qbutton = this.add.image(60, 60, 'q')
+            .setInteractive()
+            .setScrollFactor(0)
+            .setOrigin(0.5);
+
+        this.Wbutton = this.add.image(130, 60, 'w')
+            .setInteractive()
+            .setScrollFactor(0)
+            .setOrigin(0.5);
+
+        this.Obutton = this.add.image(950, 60, 'o')
+            .setInteractive()
+            .setScrollFactor(0)
+            .setOrigin(0.5);
+
+        this.Pbutton = this.add.image(1020, 60, 'p')
+            .setInteractive()
+            .setScrollFactor(0)
+            .setOrigin(0.5);
+
+        // pointer input
+        this.Qbutton.on('pointerdown', () => this.runner.QPressed = true);
+        this.Wbutton.on('pointerdown', () => this.runner.WPressed = true);
+        this.Obutton.on('pointerdown', () => this.runner.OPressed = true);
+        this.Pbutton.on('pointerdown', () => this.runner.PPressed = true);
+
+        this.Qbutton.on('pointerup', () => this.runner.QPressed = false);
+        this.Wbutton.on('pointerup', () => this.runner.WPressed = false);
+        this.Obutton.on('pointerup', () => this.runner.OPressed = false);
+        this.Pbutton.on('pointerup', () => this.runner.PPressed = false);
     }
 
+    // --------------------------------------------------
+    // UPDATE
+    // --------------------------------------------------
+
     update() {
-        if (Phaser.Input.Keyboard.JustDown(this.keys.R)) {
+        // reset
+        if (
+            Phaser.Input.Keyboard.JustDown(this.keys.R) ||
+            Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
+        ) {
             this.runner.reset();
         }
 
-        this.runner.updateControls(this.keys);
-        this.runner.stabilize();
+        //this.runner.updateControls(this.keys);
+        //this.runner.stabilize();
 
-        const fixedTimeStep = 1 / 60;
-        this.planckWorld.step(fixedTimeStep, 8, 3);
+        // physics step
+        this.world.step(1 / 60, 8, 3);
+
+        // sync visuals
         this.runner.syncSprites();
 
-        const followX = Math.max(0, this.runner.bodies.torso.getPosition().x * SCALE - 280);
-        this.cameras.main.scrollX = Phaser.Math.Linear(this.cameras.main.scrollX, followX, 0.08);
+        // camera follow
+        // const followX =
+        //     Math.max(
+        //         0,
+        //         this.runner.bodies.torso.getPosition().x * SCALE - 280
+        //     );
 
-        this.distanceText.setText(`Distance: ${this.runner.distance.toFixed(2)} m`);
+        // this.cameras.main.scrollX =
+        //     Phaser.Math.Linear(this.cameras.main.scrollX, followX, 0.08);
 
-        // Reset if the runner goes catastrophically out of control.
-        const torsoY = this.runner.bodies.torso.getPosition().y;
-        if (torsoY > 12) {
-            this.runner.reset();
-        }
+        // // UI
+        // this.distanceText.setText(
+        //     `Distance: ${this.runner.distance.toFixed(2)} m`
+        // );
+
+        // // fail-safe reset
+        // const torsoY = this.runner.bodies.torso.getPosition().y;
+        // if (torsoY > 12) {
+        //     this.runner.reset();
+        // }
     }
 }
