@@ -1,54 +1,90 @@
 import { Runner } from "./Runner.js";
 import {
-    originX, PPM, px2m, W, H, WALK_SPEED, SCALE, CATEGORY_GROUND,
-    MASK_GROUND, CATEGORY_BODYPARTS, MASK_BODYPARTS
+    PPM,
+    CATEGORY_GROUND,
+    MASK_GROUND,
+    CATEGORY_BODYPARTS,
+    MASK_BODYPARTS
 } from "./config.js";
 
 const pl = planck;
 
+const W = 1100;
+const H = 620;
+const SCALE = PPM;
+
+const px2m = (px) => px / PPM;
+
 export class GameScene extends Phaser.Scene {
     constructor() {
-        super('GameScene');
+        super("GameScene");
     }
 
     preload() {
-        this.load.setPath('assets/images');
+        this.load.setPath("assets/images");
 
-        this.load.image('head', 'head.png');
-        this.load.image('lower_arm', 'lower_arm.png');
-        this.load.image('upper_arm', 'upper_arm.png');
-        this.load.image('thigh', 'thigh.png');
-        this.load.image('lower_leg', 'lower_leg.png');
-        this.load.image('torso', 'torso.png');
-        this.load.image('foot', 'foot.png');
+        this.load.image("head", "head.png");
+        this.load.image("lower_arm", "lower_arm.png");
+        this.load.image("upper_arm", "upper_arm.png");
+        this.load.image("thigh", "thigh.png");
+        this.load.image("lower_leg", "lower_leg.png");
+        this.load.image("torso", "torso.png");
+        this.load.image("foot", "foot.png");
 
-        this.load.image('q', 'q.png');
-        this.load.image('w', 'w.png');
-        this.load.image('o', 'o.png');
-        this.load.image('p', 'p.png');
+        this.load.image("q", "q.png");
+        this.load.image("w", "w.png");
+        this.load.image("o", "o.png");
+        this.load.image("p", "p.png");
 
-        this.load.image('background_slice', 'background_slice.png');
-        this.load.image('marker', 'marker.png');
-        this.load.image('ground', 'ground.png');
-
-        this.load.image('maxxdaddy', 'maxxdaddy.jpg');
+        this.load.image("background_slice", "background_slice.png");
+        this.load.image("marker", "marker.png");
+        this.load.image("ground", "ground.png");
+        this.load.image("maxxdaddy", "maxxdaddy.jpg");
     }
 
     create() {
-        this.cameras.main.setBackgroundColor('#539df0');
 
         this.worldWidth = 140;
+
         this.world = new pl.World({
             gravity: pl.Vec2(0, 24)
         });
 
         this.drawBackground();
         this.createGround();
-        this.createRunner(); // ← now uses scale
+        this.createRunner();
         this.createUi();
         this.createInput();
 
         this.cameras.main.setBounds(0, 0, this.worldWidth * SCALE, H);
+    }
+
+    createGround() {
+        // Define dimensions for your floor (e.g., centered near the bottom of the screen)
+        let posX = 400;
+        let posY = 550;
+        let width = 800;
+        let height = 25;
+        const pixelsPerMeter = 30; // 30 pixels equals 1 meter
+
+        let floorBody = this.world.createBody({
+            type: 'static',
+            position: new pl.Vec2(posX / pixelsPerMeter, posY / pixelsPerMeter)
+        });
+
+        let floorShape = new pl.Box((width / 2) / pixelsPerMeter, (height / 2) / pixelsPerMeter);
+        const fixture = floorBody.createFixture({
+            shape: floorShape,
+            friction: 0.8,
+            restitution: 0.1 // Low bounce
+        });
+
+        fixture.setFilterData({
+            categoryBits: CATEGORY_GROUND,
+            maskBits: CATEGORY_BODYPARTS,
+            groupIndex: 0
+        });
+
     }
 
     makePartRect(key, xPx, yPx, wPx, hPx, density = 1.0, friction = 0.6, restitution = 0.1) {
@@ -57,14 +93,16 @@ export class GameScene extends Phaser.Scene {
             position: pl.Vec2(px2m(xPx), px2m(yPx)),
             angle: 0,
             linearDamping: 0.05,
-            angularDamping: 0.10
+            angularDamping: 0.10,
+            bullet: true
         });
 
         const fix = body.createFixture(pl.Box(px2m(wPx / 2), px2m(hPx / 2)), {
-            density, friction, restitution
+            density,
+            friction,
+            restitution
         });
 
-        // IMPORTANT: filter goes on the fixture
         fix.setFilterData({
             categoryBits: CATEGORY_BODYPARTS,
             maskBits: MASK_BODYPARTS,
@@ -79,53 +117,20 @@ export class GameScene extends Phaser.Scene {
     }
 
     drawBackground() {
-        for (let i = 0; i < this.worldWidth * this.SCALE; i++) {
-            this.add.image(i, 0, 'background_slice')
+        for (let i = 0; i < this.worldWidth * SCALE; i++) {
+            this.add.image(i, 0, "background_slice")
                 .setDisplaySize(1, H)
                 .setOrigin(0, 0);
         }
 
         for (let i = 1000; i < this.worldWidth * SCALE; i += 1000) {
-            this.add.image(i, 503, 'marker').setOrigin(0, 0);
+            this.add.image(i, 503, "marker").setOrigin(0, 0);
         }
     }
 
-    // --------------------------------------------------
-    // GROUND
-    // --------------------------------------------------
-
-    createGround() {
-        const ground = this.world.createBody();
-
-        const pts = [];
-
-        for (let i = 0; i <= this.worldWidth; i += 2) {
-            const y =
-                4.6 +
-                Math.sin(i * 0.16) * 0.08 +
-                Math.sin(i * 0.055) * 0.14;
-
-            pts.push(pl.Vec2(i, y));
-        }
-
-        for (let i = 0; i < pts.length - 1; i++) {
-            ground.createFixture(
-                pl.Edge(pts[i], pts[i + 1]),
-                {
-                    friction: 1.35,
-                    filterCategoryBits: CATEGORY_GROUND,
-                    filterMaskBits: CATEGORY_BODYPARTS
-                }
-            );
-        }
-    }
-
-    // --------------------------------------------------
-    // RUNNER (UPDATED HERE)
-    // --------------------------------------------------
 
     createRunner() {
-        const RUNNER_SCALE = 2; // 🔥 double size
+        const RUNNER_SCALE = 2;
 
         this.runner = new Runner(
             this,
@@ -136,33 +141,25 @@ export class GameScene extends Phaser.Scene {
         );
     }
 
-    // --------------------------------------------------
-    // UI
-    // --------------------------------------------------
-
     createUi() {
-        this.distanceText = this.add.text(this.W / 2 - 100, 80, 'Distance: 0.00 m', {
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
+        this.distanceText = this.add.text(W / 2 - 100, 80, "Distance: 0.00 m", {
+            fontFamily: "Arial",
+            fontSize: "24px",
+            color: "#ffffff",
+            fontStyle: "bold"
         }).setScrollFactor(0);
 
         this.tipText = this.add.text(
-            this.add.text(W / 2),
+            W / 2 - 180,
             110,
-            'Lean into alternating keys. Falling is expected.',
+            "Lean into alternating keys. Falling is expected.",
             {
-                fontFamily: 'Arial',
-                fontSize: '16px',
-                color: '#ffffff'
+                fontFamily: "Arial",
+                fontSize: "16px",
+                color: "#ffffff"
             }
         ).setScrollFactor(0);
     }
-
-    // --------------------------------------------------
-    // INPUT
-    // --------------------------------------------------
 
     createInput() {
         this.keys = this.input.keyboard.addKeys({
@@ -174,44 +171,40 @@ export class GameScene extends Phaser.Scene {
             SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
-        this.Qbutton = this.add.image(60, 60, 'q')
+        this.Qbutton = this.add.image(60, 60, "q")
             .setInteractive()
             .setScrollFactor(0)
             .setOrigin(0.5);
 
-        this.Wbutton = this.add.image(130, 60, 'w')
+        this.Wbutton = this.add.image(130, 60, "w")
             .setInteractive()
             .setScrollFactor(0)
             .setOrigin(0.5);
 
-        this.Obutton = this.add.image(950, 60, 'o')
+        this.Obutton = this.add.image(950, 60, "o")
             .setInteractive()
             .setScrollFactor(0)
             .setOrigin(0.5);
 
-        this.Pbutton = this.add.image(1020, 60, 'p')
+        this.Pbutton = this.add.image(1020, 60, "p")
             .setInteractive()
             .setScrollFactor(0)
             .setOrigin(0.5);
 
-        // pointer input
-        this.Qbutton.on('pointerdown', () => this.runner.QPressed = true);
-        this.Wbutton.on('pointerdown', () => this.runner.WPressed = true);
-        this.Obutton.on('pointerdown', () => this.runner.OPressed = true);
-        this.Pbutton.on('pointerdown', () => this.runner.PPressed = true);
+        this.Qbutton.on("pointerdown", () => this.runner.QPressed = true);
+        this.Wbutton.on("pointerdown", () => this.runner.WPressed = true);
+        this.Obutton.on("pointerdown", () => this.runner.OPressed = true);
+        this.Pbutton.on("pointerdown", () => this.runner.PPressed = true);
 
-        this.Qbutton.on('pointerup', () => this.runner.QPressed = false);
-        this.Wbutton.on('pointerup', () => this.runner.WPressed = false);
-        this.Obutton.on('pointerup', () => this.runner.OPressed = false);
-        this.Pbutton.on('pointerup', () => this.runner.PPressed = false);
+        this.Qbutton.on("pointerup", () => this.runner.QPressed = false);
+        this.Wbutton.on("pointerup", () => this.runner.WPressed = false);
+        this.Obutton.on("pointerup", () => this.runner.OPressed = false);
+        this.Pbutton.on("pointerup", () => this.runner.PPressed = false);
     }
 
-    // --------------------------------------------------
-    // UPDATE
-    // --------------------------------------------------
-
     update() {
-        // reset
+        if (!this.runner) return;
+
         if (
             Phaser.Input.Keyboard.JustDown(this.keys.R) ||
             Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
@@ -219,34 +212,41 @@ export class GameScene extends Phaser.Scene {
             this.runner.reset();
         }
 
-        //this.runner.updateControls(this.keys);
-        //this.runner.stabilize();
+        if (this.runner.updateControls) {
+            this.runner.updateControls(this.keys);
+        }
 
-        // physics step
-        this.world.step(1 / 60, 8, 3);
+        if (this.runner.stabilize) {
+            this.runner.stabilize();
+        }
 
-        // sync visuals
+        this.world.step(1 / 60, 12, 6);
+
         this.runner.syncSprites();
 
-        // camera follow
-        // const followX =
-        //     Math.max(
-        //         0,
-        //         this.runner.bodies.torso.getPosition().x * SCALE - 280
-        //     );
+        if (this.runner.bodies && this.runner.bodies.torso) {
+            const torso = this.runner.bodies.torso;
 
-        // this.cameras.main.scrollX =
-        //     Phaser.Math.Linear(this.cameras.main.scrollX, followX, 0.08);
+            const followX = Math.max(
+                0,
+                torso.getPosition().x * SCALE - 280
+            );
 
-        // // UI
-        // this.distanceText.setText(
-        //     `Distance: ${this.runner.distance.toFixed(2)} m`
-        // );
+            this.cameras.main.scrollX = Phaser.Math.Linear(
+                this.cameras.main.scrollX,
+                followX,
+                0.08
+            );
 
-        // // fail-safe reset
-        // const torsoY = this.runner.bodies.torso.getPosition().y;
-        // if (torsoY > 12) {
-        //     this.runner.reset();
-        // }
+            if (this.runner.distance !== undefined) {
+                this.distanceText.setText(
+                    `Distance: ${this.runner.distance.toFixed(2)} m`
+                );
+            }
+
+            if (torso.getPosition().y > 12) {
+                this.runner.reset();
+            }
+        }
     }
 }

@@ -1,10 +1,9 @@
-export const W = 800;
-export const H = 600;
+export const W = 1100;
+export const H = 620;
 export const SCALE = 120;
 
 export const PPM = 30;
 
-export const px2m = (px) => px / PPM;
 export const originX = W * .3;
 export const originY = 295;
 
