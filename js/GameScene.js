@@ -8,6 +8,7 @@ import {
 } from "./config.js";
 
 const pl = planck;
+const RUNNER_SCALE = 2;
 
 const W = 1100;
 const H = 620;
@@ -57,6 +58,19 @@ export class GameScene extends Phaser.Scene {
         this.createInput();
 
         this.cameras.main.setBounds(0, 0, this.worldWidth * SCALE, H);
+    }
+
+    getRunnerDimensions() {
+        return {
+            body: { w: 40, h: 80 },
+            pelvis: { w: 35, h: 20 },
+            thigh: { w: 18, h: 45 },
+            leg: { w: 16, h: 40 },
+            foot: { w: 28, h: 12 },
+            upperArm: { w: 14, h: 38 },
+            lowerArm: { w: 12, h: 34 },
+            head: { w: 32, h: 32 }
+        };
     }
 
     createGround() {
@@ -130,14 +144,14 @@ export class GameScene extends Phaser.Scene {
 
 
     createRunner() {
-        const RUNNER_SCALE = 2;
 
         this.runner = new Runner(
             this,
             this.world,
-            6.5,
-            3,
-            RUNNER_SCALE
+            // 6.5,
+            // 3,
+            // RUNNER_SCALE,
+            this.getRunnerDimensions(),
         );
     }
 
@@ -209,16 +223,17 @@ export class GameScene extends Phaser.Scene {
             Phaser.Input.Keyboard.JustDown(this.keys.R) ||
             Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
         ) {
-            this.runner.reset();
+            this.runner.destroy();
+            createRunner();
         }
 
-        if (this.runner.updateControls) {
-            this.runner.updateControls(this.keys);
-        }
+        // if (this.runner.updateControls) {
+        //     this.runner.updateControls(this.keys);
+        // }
 
-        if (this.runner.stabilize) {
-            this.runner.stabilize();
-        }
+        // if (this.runner.stabilize) {
+        //     this.runner.stabilize();
+        // }
 
         this.world.step(1 / 60, 12, 6);
 

@@ -30,7 +30,7 @@ const PPM = 30;
 
 
 export class Runner {
-    constructor(scene, world) {
+    constructor(scene, world, dimensions) {
         this.scene = scene;
         this.world = world;
         this.lowerLeftArmOffset = { x: 0, y: 40 };
@@ -57,6 +57,16 @@ export class Runner {
         this.kneeLimits = [-0.1, 2.0];
         this.ankleLimits = [-0.7, 0.7];
         this.neckLimits = [-0.12, 0.12];
+        this.S = {
+            body: { w: dimensions.body.w, h: dimensions.body.h },
+            pelvis: { w: dimensions.pelvis.w, h: dimensions.pelvis.h },
+            thigh: { w: dimensions.thigh.w, h: dimensions.thigh.h },
+            leg: { w: dimensions.leg.w, h: dimensions.leg.h },
+            foot: { w: dimensions.foot.w, h: dimensions.foot.h },
+            upperArm: { w: dimensions.upperArm.w, h: dimensions.upperArm.h },
+            lowerArm: { w: dimensions.lowerArm.w, h: dimensions.lowerArm.h },
+            head: { w: dimensions.head.w, h: dimensions.head.h }
+        };
 
         this._accum = 0;
         this.targets = {
@@ -72,22 +82,12 @@ export class Runner {
             leftElbow: 1.0,
             rightElbow: 1.0
         };
-        this.S = {
-            body: { w: 71, h: 140 },
-            pelvis: { w: 42, h: 42 },
-            thigh: { w: 62, h: 80 },
-            leg: { w: 30, h: 80 },
-            foot: { w: 50, h: 23 },
-            upperArm: { w: 47, h: 80 },
-            lowerArm: { w: 43, h: 80 },
-            head: { r: 35 }
-        };
 
         this.v = (xPx, yPx) => pl.Vec2(px2m(xPx), px2m(yPx));
 
         // Parts
         this.parts = {
-            head: this.makePartCircle("head", originX + this.headOffset.x, originY + this.headOffset.y, this.S.head.r, 0.8),
+            head: this.makePartCircle("head", originX + this.headOffset.x, originY + this.headOffset.y, this.S.head.w, 0.8),
             pelvis: this.makePartRect("pelvis", originX + this.pelvisOffset.x, originY + this.pelvisOffset.y, this.S.pelvis.w, this.S.pelvis.h, 1.2),
             lowerLeftArm: this.makePartRect("lower_arm", originX + this.lowerLeftArmOffset.x, originY + this.lowerLeftArmOffset.y, this.S.lowerArm.w, this.S.lowerArm.h),
             upperLeftArm: this.makePartRect("upper_arm", originX + this.upperLeftArmOffset.x, originY + this.upperLeftArmOffset.y, this.S.upperArm.w, this.S.upperArm.h),
@@ -261,12 +261,10 @@ export class Runner {
     }
 
     makePartRect(name, x, y, w, h, density = 1) {
-        // replace with your actual implementation
         return this.scene.makePartRect(name, x, y, w, h, density);
     }
 
     makePartCircle(name, x, y, r, density = 1) {
-        // replace with your actual implementation
         return this.scene.makePartCircle(name, x, y, r, density);
     }
 
