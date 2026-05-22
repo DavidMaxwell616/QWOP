@@ -22,33 +22,15 @@
 // const ankleLimits = [-0.6, 0.6];
 // const shoulderLimits = [-1.0, 1.0];
 // const elbowLimits = [-1.2, 0.2];
-import { MOTOR_TORQUE, originX, originY, CATEGORY_BODYPARTS, MASK_BODYPARTS } from "./config.js";
+import { MOTOR_TORQUE, px2m, m2px, CATEGORY_BODYPARTS, MASK_BODYPARTS } from "./config.js";
 const pl = planck;
-const m2px = (m) => m * PPM;
-const px2m = (px) => px / PPM;
-const PPM = 30;
+
 
 
 export class Runner {
-    constructor(scene, world, dimensions) {
+    constructor(scene, world, w, h, dimensions) {
         this.scene = scene;
         this.world = world;
-        this.lowerLeftArmOffset = { x: 0, y: 40 };
-        this.upperLeftArmOffset = { x: 0, y: - 20 };
-        this.leftThighOffset = { x: 0, y: 70 };
-        this.leftFootOffset = { x: 10, y: 172 };
-        this.leftLegOffset = { x: -10, y: 140 };
-        this.rightFootOffset = { x: 10, y: 172 };
-        this.rightLegOffset = { x: -10, y: 140 };
-        this.rightThighOffset = { x: 0, y: 70 };
-        this.headOffset = { x: 0, y: -95 };
-        this.backOffset = { x: 0, y: 0 };
-        this.pelvisOffset = { x: 0, y: 0 };
-        this.lowerRightArmOffset = { x: 0, y: 40 };
-        this.upperRightArmOffset = { x: 0, y: - 20 };
-        this.bodyOffset = { x: 0, y: 0 };
-
-
         this.motorTorque = MOTOR_TORQUE ?? 140;
         this.shoulderLimits = [-1.8, 1.8];
         this.elbowLimits = [-1.6, 0.2];
@@ -57,18 +39,15 @@ export class Runner {
         this.kneeLimits = [-0.1, 2.0];
         this.ankleLimits = [-0.7, 0.7];
         this.neckLimits = [-0.12, 0.12];
-        this.S = {
-            body: { w: dimensions.body.w, h: dimensions.body.h },
-            pelvis: { w: dimensions.pelvis.w, h: dimensions.pelvis.h },
-            thigh: { w: dimensions.thigh.w, h: dimensions.thigh.h },
-            leg: { w: dimensions.leg.w, h: dimensions.leg.h },
-            foot: { w: dimensions.foot.w, h: dimensions.foot.h },
-            upperArm: { w: dimensions.upperArm.w, h: dimensions.upperArm.h },
-            lowerArm: { w: dimensions.lowerArm.w, h: dimensions.lowerArm.h },
-            head: { w: dimensions.head.w, h: dimensions.head.h }
-        };
-
+        this.originX = w * .2;
+        this.originY = h / 2;
         this._accum = 0;
+        this.motorState = {
+            leftHip: 0,
+            rightHip: 0,
+            leftKnee: 0,
+            rightKnee: 0
+        };
         this.targets = {
             hipBack: 0,
             leftHip: 0.2,
@@ -83,29 +62,45 @@ export class Runner {
             rightElbow: 1.0
         };
 
-        this.v = (xPx, yPx) => pl.Vec2(px2m(xPx), px2m(yPx));
-
-        // Parts
-        this.parts = {
-            head: this.makePartCircle("head", originX + this.headOffset.x, originY + this.headOffset.y, this.S.head.w, 0.8),
-            pelvis: this.makePartRect("pelvis", originX + this.pelvisOffset.x, originY + this.pelvisOffset.y, this.S.pelvis.w, this.S.pelvis.h, 1.2),
-            lowerLeftArm: this.makePartRect("lower_arm", originX + this.lowerLeftArmOffset.x, originY + this.lowerLeftArmOffset.y, this.S.lowerArm.w, this.S.lowerArm.h),
-            upperLeftArm: this.makePartRect("upper_arm", originX + this.upperLeftArmOffset.x, originY + this.upperLeftArmOffset.y, this.S.upperArm.w, this.S.upperArm.h),
-            leftLeg: this.makePartRect("lower_leg", originX + this.leftLegOffset.x, originY + this.leftLegOffset.y, this.S.leg.w, this.S.leg.h),
-            leftThigh: this.makePartRect("thigh", originX + this.leftThighOffset.x, originY + this.leftThighOffset.y, this.S.thigh.w, this.S.thigh.h),
-            leftFoot: this.makePartRect("foot", originX + this.leftFootOffset.x, originY + this.leftFootOffset.y, this.S.foot.w, this.S.foot.h),
-
-            rightFoot: this.makePartRect("foot", originX + this.rightFootOffset.x, originY + this.rightFootOffset.y, this.S.foot.w, this.S.foot.h),
-            rightLeg: this.makePartRect("lower_leg", originX + this.rightLegOffset.x, originY + this.rightLegOffset.y, this.S.leg.w, this.S.leg.h),
-            rightThigh: this.makePartRect("thigh", originX + this.rightThighOffset.x, originY + this.rightThighOffset.y, this.S.thigh.w, this.S.thigh.h),
-
-            body: this.makePartRect("torso", originX + this.bodyOffset.x, originY + this.bodyOffset.y, this.S.body.w, this.S.body.h, 1.2),
-
-            lowerRightArm: this.makePartRect("lower_arm", originX + this.lowerRightArmOffset.x, originY + this.lowerRightArmOffset.y, this.S.lowerArm.w, this.S.lowerArm.h),
-            upperRightArm: this.makePartRect("upper_arm", originX + this.upperRightArmOffset.x, originY + this.upperRightArmOffset.y, this.S.upperArm.w, this.S.upperArm.h),
+        const offsets = {
+            lowerLeftArmOffset: { x: 0, y: 40 },
+            upperLeftArmOffset: { x: 0, y: - 20 },
+            leftThighOffset: { x: 0, y: 70 },
+            leftFootOffset: { x: 10, y: 172 },
+            leftLegOffset: { x: -10, y: 140 },
+            rightFootOffset: { x: 10, y: 172 },
+            rightLegOffset: { x: -10, y: 140 },
+            rightThighOffset: { x: 0, y: 70 },
+            headOffset: { x: 0, y: -95 },
+            backOffset: { x: 0, y: 0 },
+            pelvisOffset: { x: 0, y: 0 },
+            lowerRightArmOffset: { x: 0, y: 40 },
+            upperRightArmOffset: { x: 0, y: - 20 },
+            bodyOffset: { x: 0, y: 0 },
 
         };
 
+        this.v = (xPx, yPx) => pl.Vec2(px2m(xPx), px2m(yPx));
+
+        this.parts = {
+            head: this.makePartCircle("head", this.originX + offsets.headOffset.x, this.originY + offsets.headOffset.y, dimensions.head.w / 2, 0.8),
+            pelvis: this.makePartRect("pelvis", this.originX + offsets.pelvisOffset.x, this.originY + offsets.pelvisOffset.y, dimensions.pelvis.w, dimensions.pelvis.h, 1.2),
+            lowerLeftArm: this.makePartRect("lowerArm", this.originX + offsets.lowerLeftArmOffset.x, this.originY + offsets.lowerLeftArmOffset.y, dimensions.lowerArm.w, dimensions.lowerArm.h),
+            upperLeftArm: this.makePartRect("upperArm", this.originX + offsets.upperLeftArmOffset.x, this.originY + offsets.upperLeftArmOffset.y, dimensions.upperArm.w, dimensions.upperArm.h),
+            leftLeg: this.makePartRect("leg", this.originX + offsets.leftLegOffset.x, this.originY + offsets.leftLegOffset.y, dimensions.leg.w, dimensions.leg.h),
+            leftThigh: this.makePartRect("thigh", this.originX + offsets.leftThighOffset.x, this.originY + offsets.leftThighOffset.y, dimensions.thigh.w, dimensions.thigh.h),
+            leftFoot: this.makePartRect("foot", this.originX + offsets.leftFootOffset.x, this.originY + offsets.leftFootOffset.y, dimensions.foot.w, dimensions.foot.h),
+
+            rightFoot: this.makePartRect("foot", this.originX + offsets.rightFootOffset.x, this.originY + offsets.rightFootOffset.y, dimensions.foot.w, dimensions.foot.h),
+            rightLeg: this.makePartRect("leg", this.originX + offsets.rightLegOffset.x, this.originY + offsets.rightLegOffset.y, dimensions.leg.w, dimensions.leg.h),
+            rightThigh: this.makePartRect("thigh", this.originX + offsets.rightThighOffset.x, this.originY + offsets.rightThighOffset.y, dimensions.thigh.w, dimensions.thigh.h),
+
+            body: this.makePartRect("body", this.originX + offsets.bodyOffset.x, this.originY + offsets.bodyOffset.y, dimensions.body.w, dimensions.body.h, 1.2),
+
+            lowerRightArm: this.makePartRect("lowerArm", this.originX + offsets.lowerRightArmOffset.x, this.originY + offsets.lowerRightArmOffset.y, dimensions.lowerArm.w, dimensions.lowerArm.h),
+            upperRightArm: this.makePartRect("upperArm", this.originX + offsets.upperRightArmOffset.x, this.originY + offsets.upperRightArmOffset.y, dimensions.upperArm.w, dimensions.upperArm.h),
+
+        };
         // Aliases for convenience
         this.head = this.parts.head;
         this.body = this.parts.body;
@@ -137,7 +132,7 @@ export class Runner {
                     },
                     this.head.body,
                     this.body.body,
-                    this.v(originX, originY - 40)
+                    this.v(this.originX, this.originY - 40)
                 )
             ),
             leftShoulder: this.world.createJoint(
@@ -148,7 +143,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.shoulderLimits[0],
                     upperAngle: this.shoulderLimits[1]
-                }, this.upperLeftArm.body, this.body.body, this.v(originX, originY - 40))
+                }, this.upperLeftArm.body, this.body.body, this.v(this.originX, this.originY - 40))
             ),
 
             rightShoulder: this.world.createJoint(
@@ -159,7 +154,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.shoulderLimits[0],
                     upperAngle: this.shoulderLimits[1]
-                }, this.upperRightArm.body, this.body.body, this.v(originX, originY - 40))
+                }, this.upperRightArm.body, this.body.body, this.v(this.originX, this.originY - 40))
             ),
 
             leftElbow: this.world.createJoint(
@@ -170,7 +165,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.elbowLimits[0],
                     upperAngle: this.elbowLimits[1]
-                }, this.upperLeftArm.body, this.lowerLeftArm.body, this.v(originX, originY + 10))
+                }, this.upperLeftArm.body, this.lowerLeftArm.body, this.v(this.originX, this.originY + 10))
             ),
 
             rightElbow: this.world.createJoint(
@@ -181,7 +176,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.elbowLimits[0],
                     upperAngle: this.elbowLimits[1]
-                }, this.upperRightArm.body, this.lowerRightArm.body, this.v(originX, originY + 10))
+                }, this.upperRightArm.body, this.lowerRightArm.body, this.v(this.originX, this.originY + 10))
             ),
 
             hipBack: this.world.createJoint(
@@ -192,7 +187,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.hipLimits[0],
                     upperAngle: this.hipLimits[1]
-                }, this.body.body, this.pelvis.body, this.v(originX, originY + 20))
+                }, this.body.body, this.pelvis.body, this.v(this.originX, this.originY + 20))
             ),
 
             leftHipLeg: this.world.createJoint(
@@ -203,7 +198,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.pelvisLimits[0],
                     upperAngle: this.pelvisLimits[1]
-                }, this.pelvis.body, this.leftThigh.body, this.v(originX, originY + 50))
+                }, this.pelvis.body, this.leftThigh.body, this.v(this.originX, this.originY + 50))
             ),
             rightHipLeg: this.world.createJoint(
                 pl.RevoluteJoint({
@@ -213,7 +208,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.pelvisLimits[0],
                     upperAngle: this.pelvisLimits[1]
-                }, this.pelvis.body, this.rightThigh.body, this.v(originX, originY + 50))
+                }, this.pelvis.body, this.rightThigh.body, this.v(this.originX, this.originY + 50))
             ),
 
             leftKnee: this.world.createJoint(
@@ -224,7 +219,7 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.kneeLimits[0],
                     upperAngle: this.kneeLimits[1]
-                }, this.leftThigh.body, this.leftLeg.body, this.v(originX, originY + 120))
+                }, this.leftThigh.body, this.leftLeg.body, this.v(this.originX, this.originY + 120))
             ),
 
             rightKnee: this.world.createJoint(
@@ -235,14 +230,14 @@ export class Runner {
                     enableLimit: true,
                     lowerAngle: this.kneeLimits[0],
                     upperAngle: this.kneeLimits[1]
-                }, this.rightThigh.body, this.rightLeg.body, this.v(originX, originY + 120))
+                }, this.rightThigh.body, this.rightLeg.body, this.v(this.originX, this.originY + 120))
             ),
             leftAnkle: this.world.createJoint(
-                pl.WeldJoint({}, this.leftLeg.body, this.leftFoot.body, this.v(originX, originY + 122))
+                pl.WeldJoint({}, this.leftLeg.body, this.leftFoot.body, this.v(this.originX, this.originY + 122))
             ),
 
             rightAnkle: this.world.createJoint(
-                pl.WeldJoint({}, this.rightLeg.body, this.rightFoot.body, this.v(originX, originY + 122))
+                pl.WeldJoint({}, this.rightLeg.body, this.rightFoot.body, this.v(this.originX, this.originY + 122))
             ),
 
         };
@@ -268,32 +263,6 @@ export class Runner {
         return this.scene.makePartCircle(name, x, y, r, density);
     }
 
-    makePartCircle(key, xPx, yPx, rPx, density = 1.0, friction = 0.6, restitution = 0.1) {
-        const body = this.world.createBody({
-            type: "dynamic",
-            position: pl.Vec2(px2m(xPx), px2m(yPx)),
-            angle: 0,
-            linearDamping: 0.05,
-            angularDamping: 0.10
-        });
-
-        const fix = body.createFixture(pl.Circle(px2m(rPx)), {
-            density, friction, restitution
-        });
-
-        fix.setFilterData({
-            categoryBits: CATEGORY_BODYPARTS,
-            maskBits: MASK_BODYPARTS,
-            groupIndex: 0
-        });
-
-        const sprite = this.scene.add.image(xPx, yPx, key).setOrigin(0.5);
-        sprite.setDisplaySize(rPx * 2, rPx * 2);
-        sprite._pbody = body;
-
-        return { body, sprite, fix };
-    }
-
     setDebugVisible(visible) {
         for (const part of this.allParts) {
             if (part.image) part.image.setVisible(visible);
@@ -302,15 +271,103 @@ export class Runner {
     }
 
     destroy() {
+
+        // Hide everything first
+        for (const part of this.allParts) {
+
+            if (part.sprite) {
+                part.sprite.setVisible(false);
+            }
+
+            if (part.image) {
+                part.image.setVisible(false);
+            }
+
+            if (part.graphics) {
+                part.graphics.setVisible(false);
+            }
+        }
+
+        // Destroy joints
         for (const joint of this.allJoints) {
             this.world.destroyJoint(joint);
         }
+
+        // Destroy bodies + display objects
         for (const part of this.allParts) {
+
             this.world.destroyBody(part.body);
-            if (part.image) part.image.destroy();
-            if (part.graphics) part.graphics.destroy();
+
+            if (part.sprite) {
+                part.sprite.destroy();
+            }
+
+            if (part.image) {
+                part.image.destroy();
+            }
+
+            if (part.graphics) {
+                part.graphics.destroy();
+            }
         }
     }
+
+    updateControls(keys) {
+        const hipSpeed = 4.8;
+        const kneeSpeed = 6.5;
+
+        // Q / W drive hips opposite to create stride.
+        if (keys.Q.isDown) {
+            this.motorState.leftHip = -hipSpeed;
+            this.motorState.rightHip = hipSpeed;
+        } else if (keys.W.isDown) {
+            this.motorState.leftHip = hipSpeed;
+            this.motorState.rightHip = -hipSpeed;
+        } else {
+            this.motorState.leftHip = 0;
+            this.motorState.rightHip = 0;
+        }
+
+        // O / P drive knees opposite.
+        if (keys.O.isDown) {
+            this.motorState.leftKnee = -kneeSpeed;
+            this.motorState.rightKnee = kneeSpeed * 0.9;
+        } else if (keys.P.isDown) {
+            this.motorState.leftKnee = kneeSpeed * 0.9;
+            this.motorState.rightKnee = -kneeSpeed;
+        } else {
+            this.motorState.leftKnee = 0;
+            this.motorState.rightKnee = 0;
+        }
+
+        this.joints.leftHipLeg.setMotorSpeed(this.motorState.leftHip);
+        this.joints.rightHipLeg.setMotorSpeed(this.motorState.rightHip);
+        this.joints.leftKnee.setMotorSpeed(this.motorState.leftKnee);
+        this.joints.rightKnee.setMotorSpeed(this.motorState.rightKnee);
+
+        // Passive arm swing based on torso tilt for comic balance.
+        const torsoAngle = this.parts.body.sprite.angle;
+        const armBias = Phaser.Math.Clamp(-torsoAngle * 2.5, -2.0, 2.0);
+        this.parts.upperLeftArm.body.applyTorque(-armBias * 0.8, true);
+        this.parts.upperRightArm.body.applyTorque(armBias * 0.8, true);
+    }
+
+    stabilize() {
+        // Gentle upright assistance so it is playable but still awkward.
+        const torso = this.parts.body.body;
+        const angle = torso.getAngle();
+        const angVel = torso.getAngularVelocity();
+        const torque = (-angle * 28) - (angVel * 5.2);
+        torso.applyTorque(torque, true);
+
+        // Slight forward lean helps movement.
+        const vel = torso.getLinearVelocity();
+        torso.applyForceToCenter(pl.Vec2(5.5, 0), true);
+        if (vel.x > 6.5) {
+            torso.setLinearVelocity(pl.Vec2(6.5, vel.y));
+        }
+    }
+
     // --- fixed-step stepping ---
     stepWorld(dtSec) {
         const fixed = 1 / 60;
@@ -376,37 +433,7 @@ export class Runner {
         sync(this.rightFoot);
     }
 
-    resetBody() {
-        const set = (part, xPx, yPx) => {
-            part.body.setTransform(pl.Vec2(px2m(xPx), px2m(yPx)), 0);
-            part.body.setLinearVelocity(pl.Vec2(0, 0));
-            part.body.setAngularVelocity(0);
-        };
 
-        set(this.head, originX + this.headOffset.x, originY + this.headOffset.y);
-        set(this.body, originX + this.backOffset.x, originY + this.backOffset.y);
-        set(this.pelvis, originX + this.pelvisOffset.x, originY + this.pelvisOffset.y);
-
-        set(this.rightThigh, originX + this.rightThighOffset.x, originY + this.rightThighOffset.y);
-        set(this.rightLeg, originX + this.rightLegOffset.x, originY + this.rightThighOffset.y);
-        set(this.rightFoot, originX + this.rightFootOffset.x, originY + this.rightFootOffset.y);
-
-        set(this.leftThigh, originX + this.leftThighOffset.x, originY + this.leftThighOffset.y);
-        set(this.leftLeg, originX + this.leftLegOffset.x, originY + this.leftLegOffset.y);
-        set(this.leftFoot, originX + this.leftFootOffset.x, originY + this.leftFootOffset.y);
-
-        set(this.upperRightArm, originX + this.upperRightArmOffset.x, originY + this.upperRightArmOffset.y);
-        set(this.lowerRightArm, originX + this.lowerRightArmOffset.x, originY + this.lowerRightArmOffset.y);
-        set(this.upperLeftArm, originX + this.upperLeftArmOffset.x, originY - this.upperRightArmOffset.y);
-        set(this.lowerLeftArm, originX + this.lowerLeftArmOffset.x, originY + this.lowerLeftArmOffset.y);
-
-        this.scene.handleQReleased();
-        this.scene.handleWReleased();
-        this.scene.handleOReleased();
-        this.scene.handlePReleased();
-
-        this.nowMs = Date.now();
-    }
     applySelfBalanceTorque() {
         const torso = this.body.body;
         const pelvis = this.pelvis.body;

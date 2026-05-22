@@ -1,20 +1,16 @@
 import { Runner } from "./Runner.js";
 import {
     PPM,
+    SCALE,
     CATEGORY_GROUND,
     MASK_GROUND,
+    px2m,
     CATEGORY_BODYPARTS,
     MASK_BODYPARTS
 } from "./config.js";
 
 const pl = planck;
-const RUNNER_SCALE = 2;
 
-const W = 1100;
-const H = 620;
-const SCALE = PPM;
-
-const px2m = (px) => px / PPM;
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -24,13 +20,16 @@ export class GameScene extends Phaser.Scene {
     preload() {
         this.load.setPath("assets/images");
 
-        this.load.image("head", "head.png");
-        this.load.image("lower_arm", "lower_arm.png");
-        this.load.image("upper_arm", "upper_arm.png");
+        this.load.path = "assets/images/";
+        this.load.image("body", "torso.png");
+        this.load.image("pelvis", "pelvis.png");
         this.load.image("thigh", "thigh.png");
-        this.load.image("lower_leg", "lower_leg.png");
-        this.load.image("torso", "torso.png");
+        this.load.image("leg", "lower_leg.png");
         this.load.image("foot", "foot.png");
+        this.load.image("upperArm", "upper_arm.png");
+        this.load.image("lowerArm", "lower_arm.png");
+        this.load.image("head", "head.png");
+
 
         this.load.image("q", "q.png");
         this.load.image("w", "w.png");
@@ -44,8 +43,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.w = this.game.config.width;
+        this.h = this.game.config.height;
 
-        this.worldWidth = 140;
 
         this.world = new pl.World({
             gravity: pl.Vec2(0, 24)
@@ -53,31 +53,39 @@ export class GameScene extends Phaser.Scene {
 
         this.drawBackground();
         this.createGround();
+        this.runnerDimensions = this.getRunnerDimensions();
         this.createRunner();
         this.createUi();
         this.createInput();
 
-        this.cameras.main.setBounds(0, 0, this.worldWidth * SCALE, H);
+        this.cameras.main.setBounds(0, 0, this.w * SCALE, this.h);
     }
 
     getRunnerDimensions() {
         return {
-            body: { w: 40, h: 80 },
-            pelvis: { w: 35, h: 20 },
-            thigh: { w: 18, h: 45 },
-            leg: { w: 16, h: 40 },
-            foot: { w: 28, h: 12 },
-            upperArm: { w: 14, h: 38 },
-            lowerArm: { w: 12, h: 34 },
-            head: { w: 32, h: 32 }
+            body: this.getTextureDimensions('head'),
+            pelvis: this.getTextureDimensions('pelvis'),
+            thigh: this.getTextureDimensions('thigh'),
+            leg: this.getTextureDimensions('leg'),
+            foot: this.getTextureDimensions('foot'),
+            upperArm: this.getTextureDimensions('upperArm'),
+            lowerArm: this.getTextureDimensions('lowerArm'),
+            head: this.getTextureDimensions('head'),
         };
+    }
+    getTextureDimensions(key) {
+        const texture = this.textures.get(key);
+
+        const w = texture.getSourceImage().width;
+        const h = texture.getSourceImage().height;
+        return { w, h };
     }
 
     createGround() {
         // Define dimensions for your floor (e.g., centered near the bottom of the screen)
         let posX = 400;
         let posY = 550;
-        let width = 800;
+        let width = this.w;
         let height = 25;
         const pixelsPerMeter = 30; // 30 pixels equals 1 meter
 
@@ -107,8 +115,7 @@ export class GameScene extends Phaser.Scene {
             position: pl.Vec2(px2m(xPx), px2m(yPx)),
             angle: 0,
             linearDamping: 0.05,
-            angularDamping: 0.10,
-            bullet: true
+            angularDamping: 0.10
         });
 
         const fix = body.createFixture(pl.Box(px2m(wPx / 2), px2m(hPx / 2)), {
@@ -129,15 +136,39 @@ export class GameScene extends Phaser.Scene {
 
         return { body, sprite, fix };
     }
+    makePartCircle(key, xPx, yPx, rPx, density = 1.0, friction = 0.6, restitution = 0.1) {
+        const body = this.world.createBody({
+            type: "dynamic",
+            position: pl.Vec2(px2m(xPx), px2m(yPx)),
+            angle: 0,
+            linearDamping: 0.05,
+            angularDamping: 0.10
+        });
 
+        const fix = body.createFixture(pl.Circle(px2m(rPx)), {
+            density, friction, restitution
+        });
+
+        fix.setFilterData({
+            categoryBits: CATEGORY_BODYPARTS,
+            maskBits: MASK_BODYPARTS,
+            groupIndex: 0
+        });
+
+        const sprite = this.add.image(xPx, yPx, key).setOrigin(0.5);
+        sprite.setDisplaySize(rPx * 2, rPx * 2);
+        sprite._pbody = body;
+
+        return { body, sprite, fix };
+    }
     drawBackground() {
-        for (let i = 0; i < this.worldWidth * SCALE; i++) {
+        for (let i = 0; i < this.w * SCALE; i++) {
             this.add.image(i, 0, "background_slice")
-                .setDisplaySize(1, H)
+                .setDisplaySize(1, this.h)
                 .setOrigin(0, 0);
         }
 
-        for (let i = 1000; i < this.worldWidth * SCALE; i += 1000) {
+        for (let i = 1000; i < this.w * SCALE; i += 1000) {
             this.add.image(i, 503, "marker").setOrigin(0, 0);
         }
     }
@@ -148,15 +179,17 @@ export class GameScene extends Phaser.Scene {
         this.runner = new Runner(
             this,
             this.world,
+            this.w,
+            this.h,
             // 6.5,
             // 3,
             // RUNNER_SCALE,
-            this.getRunnerDimensions(),
+            this.runnerDimensions
         );
     }
 
     createUi() {
-        this.distanceText = this.add.text(W / 2 - 100, 80, "Distance: 0.00 m", {
+        this.distanceText = this.add.text(this.w / 2 - 100, 80, "Distance: 0.00 m", {
             fontFamily: "Arial",
             fontSize: "24px",
             color: "#ffffff",
@@ -164,7 +197,7 @@ export class GameScene extends Phaser.Scene {
         }).setScrollFactor(0);
 
         this.tipText = this.add.text(
-            W / 2 - 180,
+            this.w / 2 - 180,
             110,
             "Lean into alternating keys. Falling is expected.",
             {
@@ -223,8 +256,9 @@ export class GameScene extends Phaser.Scene {
             Phaser.Input.Keyboard.JustDown(this.keys.R) ||
             Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
         ) {
+
             this.runner.destroy();
-            createRunner();
+            this.createRunner();
         }
 
         // if (this.runner.updateControls) {
@@ -236,7 +270,8 @@ export class GameScene extends Phaser.Scene {
         // }
 
         this.world.step(1 / 60, 12, 6);
-
+        this.runner.updateControls(this.keys);
+        this.runner.stabilize();
         this.runner.syncSprites();
 
         if (this.runner.bodies && this.runner.bodies.torso) {

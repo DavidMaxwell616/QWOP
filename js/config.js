@@ -1,11 +1,9 @@
-export const W = 1100;
-export const H = 620;
-export const SCALE = 120;
-
 export const PPM = 30;
+export const RUNNER_SCALE = 2;
 
-export const originX = W * .3;
-export const originY = 295;
+export const SCALE = PPM;
+export const m2px = (m) => m * PPM;
+export const px2m = (px) => px / PPM;
 
 // --- Controls / tuning ---
 export const WALK_SPEED = 4;
