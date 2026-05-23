@@ -5,6 +5,7 @@ import {
     CATEGORY_GROUND,
     MASK_GROUND,
     px2m,
+    m2px,
     CATEGORY_BODYPARTS,
     MASK_BODYPARTS
 } from "./config.js";
@@ -45,12 +46,14 @@ export class GameScene extends Phaser.Scene {
     create() {
         this.w = this.game.config.width;
         this.h = this.game.config.height;
-
+        this.debugGraphics = this.add.graphics();
+        this.debugGraphics.setDepth(99999);
 
         this.world = new pl.World({
             gravity: pl.Vec2(0, 24)
         });
-
+        this.bestScore = 0.00;
+        this.score = 0.00;
         this.drawBackground();
         this.createGround();
         this.runnerDimensions = this.getRunnerDimensions();
@@ -63,7 +66,7 @@ export class GameScene extends Phaser.Scene {
 
     getRunnerDimensions() {
         return {
-            body: this.getTextureDimensions('head'),
+            body: this.getTextureDimensions('body'),
             pelvis: this.getTextureDimensions('pelvis'),
             thigh: this.getTextureDimensions('thigh'),
             leg: this.getTextureDimensions('leg'),
@@ -82,19 +85,15 @@ export class GameScene extends Phaser.Scene {
     }
 
     createGround() {
-        // Define dimensions for your floor (e.g., centered near the bottom of the screen)
-        let posX = 400;
-        let posY = 550;
-        let width = this.w;
-        let height = 25;
+        const height = 25;
         const pixelsPerMeter = 30; // 30 pixels equals 1 meter
 
         let floorBody = this.world.createBody({
             type: 'static',
-            position: new pl.Vec2(posX / pixelsPerMeter, posY / pixelsPerMeter)
+            position: new pl.Vec2(this.w / 2 / pixelsPerMeter, this.h / pixelsPerMeter)
         });
 
-        let floorShape = new pl.Box((width / 2) / pixelsPerMeter, (height / 2) / pixelsPerMeter);
+        let floorShape = new pl.Box((this.w / 2) / pixelsPerMeter, height / pixelsPerMeter);
         const fixture = floorBody.createFixture({
             shape: floorShape,
             friction: 0.8,
@@ -108,59 +107,69 @@ export class GameScene extends Phaser.Scene {
         });
 
     }
+    drawPlanckDebug() {
+        if (!this.debugGraphics || !this.world) return;
 
-    makePartRect(key, xPx, yPx, wPx, hPx, density = 1.0, friction = 0.6, restitution = 0.1) {
-        const body = this.world.createBody({
-            type: "dynamic",
-            position: pl.Vec2(px2m(xPx), px2m(yPx)),
-            angle: 0,
-            linearDamping: 0.05,
-            angularDamping: 0.10
-        });
+        const g = this.debugGraphics;
+        g.clear();
 
-        const fix = body.createFixture(pl.Box(px2m(wPx / 2), px2m(hPx / 2)), {
-            density,
-            friction,
-            restitution
-        });
+        g.lineStyle(2, 0x00ff00, 1);
+        g.fillStyle(0x00ff00, 0.15);
 
-        fix.setFilterData({
-            categoryBits: CATEGORY_BODYPARTS,
-            maskBits: MASK_BODYPARTS,
-            groupIndex: 0
-        });
+        for (let body = this.world.getBodyList(); body; body = body.getNext()) {
+            const bodyPos = body.getPosition();
+            const bodyAngle = body.getAngle();
 
-        const sprite = this.add.image(xPx, yPx, key).setOrigin(0.5);
-        sprite.setDisplaySize(wPx, hPx);
-        sprite._pbody = body;
+            for (let fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
+                const shape = fixture.getShape();
+                const type = shape.getType();
 
-        return { body, sprite, fix };
+                if (type === "circle") {
+                    const center = body.getWorldPoint(shape.m_p);
+                    const x = center.x * PPM;
+                    const y = center.y * PPM;
+                    const r = shape.m_radius * PPM;
+
+                    g.strokeCircle(x, y, r);
+                }
+
+                if (type === "polygon") {
+                    const verts = shape.m_vertices.map(v => {
+                        const world = body.getWorldPoint(v);
+                        return {
+                            x: world.x * PPM,
+                            y: world.y * PPM
+                        };
+                    });
+
+                    g.beginPath();
+                    g.moveTo(verts[0].x, verts[0].y);
+
+                    for (let i = 1; i < verts.length; i++) {
+                        g.lineTo(verts[i].x, verts[i].y);
+                    }
+
+                    g.closePath();
+                    g.strokePath();
+                }
+            }
+        }
+
+        // Joint anchors
+        g.fillStyle(0xff0000, 1);
+
+        for (let joint = this.world.getJointList(); joint; joint = joint.getNext()) {
+            const a = joint.getAnchorA();
+            const b = joint.getAnchorB();
+
+            g.fillCircle(a.x * PPM, a.y * PPM, 4);
+            g.fillCircle(b.x * PPM, b.y * PPM, 4);
+
+            g.lineStyle(1, 0xff0000, 0.6);
+            g.lineBetween(a.x * PPM, a.y * PPM, b.x * PPM, b.y * PPM);
+        }
     }
-    makePartCircle(key, xPx, yPx, rPx, density = 1.0, friction = 0.6, restitution = 0.1) {
-        const body = this.world.createBody({
-            type: "dynamic",
-            position: pl.Vec2(px2m(xPx), px2m(yPx)),
-            angle: 0,
-            linearDamping: 0.05,
-            angularDamping: 0.10
-        });
 
-        const fix = body.createFixture(pl.Circle(px2m(rPx)), {
-            density, friction, restitution
-        });
-
-        fix.setFilterData({
-            categoryBits: CATEGORY_BODYPARTS,
-            maskBits: MASK_BODYPARTS,
-            groupIndex: 0
-        });
-
-        const sprite = this.add.image(xPx, yPx, key).setOrigin(0.5);
-        sprite.setDisplaySize(rPx * 2, rPx * 2);
-        sprite._pbody = body;
-
-        return { body, sprite, fix };
-    }
     drawBackground() {
         for (let i = 0; i < this.w * SCALE; i++) {
             this.add.image(i, 0, "background_slice")
@@ -175,15 +184,15 @@ export class GameScene extends Phaser.Scene {
 
 
     createRunner() {
-
+        if (this.score > this.bestScore) {
+            this.bestScore = this.score;
+            this.score = 0;
+        }
         this.runner = new Runner(
             this,
             this.world,
             this.w,
             this.h,
-            // 6.5,
-            // 3,
-            // RUNNER_SCALE,
             this.runnerDimensions
         );
     }
@@ -196,14 +205,15 @@ export class GameScene extends Phaser.Scene {
             fontStyle: "bold"
         }).setScrollFactor(0);
 
-        this.tipText = this.add.text(
-            this.w / 2 - 180,
+        this.bestScoreText = this.add.text(
+            this.w / 2 - 110,
             110,
-            "Lean into alternating keys. Falling is expected.",
+            "Best Score: 0.00m",
             {
                 fontFamily: "Arial",
-                fontSize: "16px",
-                color: "#ffffff"
+                fontSize: "24px",
+                color: "#ffffff",
+                fontStyle: "bold"
             }
         ).setScrollFactor(0);
     }
@@ -261,42 +271,43 @@ export class GameScene extends Phaser.Scene {
             this.createRunner();
         }
 
-        // if (this.runner.updateControls) {
-        //     this.runner.updateControls(this.keys);
-        // }
+        if (this.runner.updateControls) {
+            this.runner.updateControls(this.keys);
+        }
 
-        // if (this.runner.stabilize) {
-        //     this.runner.stabilize();
-        // }
+        if (this.runner.stabilize) {
+            this.runner.stabilize();
+        }
+        //this.runner.applySelfBalanceTorque();
+
+        //this.drawPlanckDebug();
 
         this.world.step(1 / 60, 12, 6);
-        this.runner.updateControls(this.keys);
-        this.runner.stabilize();
+
         this.runner.syncSprites();
 
-        if (this.runner.bodies && this.runner.bodies.torso) {
-            const torso = this.runner.bodies.torso;
+        const torso = this.runner.body.body;
+        const torsoX = m2px(torso.getPosition().x);
 
-            const followX = Math.max(
-                0,
-                torso.getPosition().x * SCALE - 280
+        this.cameras.main.scrollX = Phaser.Math.Linear(
+            this.cameras.main.scrollX,
+            Math.max(0, torsoX - this.w * 0.35),
+            0.08
+        );
+        this.runner.distance = torso.getPosition().x / 10;
+        this.score = this.runner.distance;
+        if (this.runner.distance !== undefined) {
+            this.distanceText.setText(
+                `Distance: ${this.score.toFixed(2)} m`
             );
-
-            this.cameras.main.scrollX = Phaser.Math.Linear(
-                this.cameras.main.scrollX,
-                followX,
-                0.08
+            this.bestScoreText.setText(
+                `Best Score: ${this.bestScore.toFixed(2)} m`
             );
-
-            if (this.runner.distance !== undefined) {
-                this.distanceText.setText(
-                    `Distance: ${this.runner.distance.toFixed(2)} m`
-                );
-            }
-
-            if (torso.getPosition().y > 12) {
-                this.runner.reset();
-            }
+        }
+        if ((this.runner.body.sprite.angle > 90 || this.runner.body.sprite.angle < -89)
+            && (this.runner.head.sprite.y > 500)) {
+            this.runner.destroy();
+            this.createRunner();
         }
     }
 }

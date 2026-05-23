@@ -8,7 +8,6 @@ const config = {
   width: W,
   height: H,
   parent: 'game',
-  backgroundColor: '#93c5fd',
   scene: [GameScene]
 };
 
