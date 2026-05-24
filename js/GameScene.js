@@ -248,15 +248,15 @@ export class GameScene extends Phaser.Scene {
             .setScrollFactor(0)
             .setOrigin(0.5);
 
-        this.Qbutton.on("pointerdown", () => this.runner.QPressed = true);
-        this.Wbutton.on("pointerdown", () => this.runner.WPressed = true);
-        this.Obutton.on("pointerdown", () => this.runner.OPressed = true);
-        this.Pbutton.on("pointerdown", () => this.runner.PPressed = true);
+        this.Qbutton.on("pointerdown", () => this.keys.Q.isDown = true);
+        this.Wbutton.on("pointerdown", () => this.keys.W.isDown = true);
+        this.Obutton.on("pointerdown", () => this.keys.O.isDown = true);
+        this.Pbutton.on("pointerdown", () => this.keys.P.isDown = true);
 
-        this.Qbutton.on("pointerup", () => this.runner.QPressed = false);
-        this.Wbutton.on("pointerup", () => this.runner.WPressed = false);
-        this.Obutton.on("pointerup", () => this.runner.OPressed = false);
-        this.Pbutton.on("pointerup", () => this.runner.PPressed = false);
+        this.Qbutton.on("pointerup", () => this.keys.Q.isUp = true);
+        this.Wbutton.on("pointerup", () => this.keys.W.isUp = true);
+        this.Obutton.on("pointerup", () => this.keys.O.isUp = true);
+        this.Pbutton.on("pointerup", () => this.keys.P.isUp = true);
     }
 
     update() {

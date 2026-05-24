@@ -24,6 +24,15 @@ export class Runner {
             rightKnee: 0
         };
 
+        //body w: 57, h: 131
+        //foot w: 54, h: 27
+        //head w: 43, h: 53
+        //leg w: 30, h: 100
+        //lowerArm w: 27, h: 89
+        //pelvis w: 29, h: 25
+        //thigh w: 40, h: 106
+        //upperArm w: 30, h: 78
+
         const offsets = {
             lowerLeftArmOffset: { x: -5, y: 40 },
             upperLeftArmOffset: { x: -10, y: - 30 },
