@@ -1,5 +1,6 @@
 // wck/World.as defaults. DemoWorld1 timeline overrides are not supplied.
 export const PPM = 40;
+export const SAND_PIT_WIDTH = 1913.1;
 export const RUNNER_SCALE = 2;
 
 export const SCALE = PPM;

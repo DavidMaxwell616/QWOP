@@ -24,7 +24,6 @@ export class Runner {
         this.elbowLimits = [-1.6, 0.2];
         // Keep torso and pelvis aligned, with a modest stride at either hip.
         // Horizontal thighs must carry the upper body down with them.
-        this.hipLimits = [0, 0];
         this.pelvisLimits = [-0.35, 0.35];
         // Thigh is body A, calf is body B: positive rotation bends backward
         // in our y-down world. Zero is straight; negative is hyperextension.
@@ -32,7 +31,7 @@ export class Runner {
         this.ankleLimits = [-0.7, 0.7];
         this.neckLimits = [-0.12, 0.12];
         this.originX = 0; // World origin is the starting line.
-        this.originY = h / 2;
+        this.originY = h / 2 + 10;
         //body w: 57, h: 131
         //foot w: 54, h: 27
         //head w: 43, h: 53
@@ -176,14 +175,7 @@ export class Runner {
             ),
 
             hipBack: this.world.createJoint(
-                pl.RevoluteJoint({
-                    enableMotor: true,
-                    motorSpeed: 0,
-                    maxMotorTorque: this.motorTorque,
-                    enableLimit: true,
-                    lowerAngle: this.hipLimits[0],
-                    upperAngle: this.hipLimits[1]
-                }, this.body.body, this.pelvis.body, this.v(this.originX, pelvisY))
+                pl.WeldJoint({}, this.body.body, this.pelvis.body, this.v(this.originX, pelvisY))
             ),
 
             leftHipLeg: this.world.createJoint(
@@ -253,6 +245,8 @@ export class Runner {
             leftThigh: 'clthigh', rightThigh: 'crthigh', leftLeg: 'clcalf', rightLeg: 'crcalf', leftFoot: 'clfoot', rightFoot: 'crfoot' };
         for (const [key, part] of Object.entries(this.parts)) part.fix.setUserData({ name: names[key] });
         this.allParts = Object.values(this.parts);
+        // Render above track markers (depth 1), preserving limb creation order.
+        for (const part of this.allParts) part.sprite.setDepth(2);
         this.allJoints = Object.values(this.joints);
     }
 
