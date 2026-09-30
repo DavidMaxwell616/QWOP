@@ -1,313 +1,158 @@
-import { Runner } from "./Runner.js";
-import {
-    PPM,
-    SCALE,
-    CATEGORY_GROUND,
-    MASK_GROUND,
-    px2m,
-    m2px,
-    CATEGORY_BODYPARTS,
-    MASK_BODYPARTS
-} from "./config.js";
-
-const pl = planck;
-
+import { Runner } from './Runner.js';
+import { PPM, px2m, m2px, CATEGORY_GROUND, CATEGORY_HURDLE } from './config.js';
+const pl = globalThis.planck;
+import { Athletics, WORLD_DEFAULTS, SAND_PIT_AT } from './Athletics.js';
+const STEP = WORLD_DEFAULTS.timeStep;
+const ASSETS = { body: 'torso', pelvis: 'pelvis', thigh: 'thigh', leg: 'lower_leg', foot: 'foot', upperArm: 'upper_arm', lowerArm: 'lower_arm', head: 'head', q: 'q', w: 'w', o: 'o', p: 'p', background_slice: 'background_slice' };
 
 export class GameScene extends Phaser.Scene {
-    constructor() {
-        super("GameScene");
-    }
-
+    constructor() { super('GameScene'); }
     preload() {
-        this.load.setPath("assets/images");
-
-        this.load.path = "assets/images/";
-        this.load.image("body", "torso.png");
-        this.load.image("pelvis", "pelvis.png");
-        this.load.image("thigh", "thigh.png");
-        this.load.image("leg", "lower_leg.png");
-        this.load.image("foot", "foot.png");
-        this.load.image("upperArm", "upper_arm.png");
-        this.load.image("lowerArm", "lower_arm.png");
-        this.load.image("head", "head.png");
-
-
-        this.load.image("q", "q.png");
-        this.load.image("w", "w.png");
-        this.load.image("o", "o.png");
-        this.load.image("p", "p.png");
-
-        this.load.image("background_slice", "background_slice.png");
-        this.load.image("marker", "marker.png");
-        this.load.image("ground", "ground.png");
-        this.load.image("maxxdaddy", "maxxdaddy.jpg");
+        this.load.on('loaderror', file => console.error(`Asset failed to load: ${file.url}`));
+        for (const [key, file] of Object.entries(ASSETS)) this.load.image(key, `assets/images/${file}.png`);
     }
-
     create() {
-        this.w = this.game.config.width;
-        this.h = this.game.config.height;
-        this.debugGraphics = this.add.graphics();
-        this.debugGraphics.setDepth(99999);
-
-        this.world = new pl.World({
-            gravity: pl.Vec2(0, 24)
-        });
-        this.bestScore = 0.00;
-        this.score = 0.00;
-        this.drawBackground();
-        this.createGround();
-        this.runnerDimensions = this.getRunnerDimensions();
-        this.createRunner();
-        this.createUi();
-        this.createInput();
-
-        this.cameras.main.setBounds(0, 0, this.w * SCALE, this.h);
-    }
-
-    getRunnerDimensions() {
-        return {
-            body: this.getTextureDimensions('body'),
-            pelvis: this.getTextureDimensions('pelvis'),
-            thigh: this.getTextureDimensions('thigh'),
-            leg: this.getTextureDimensions('leg'),
-            foot: this.getTextureDimensions('foot'),
-            upperArm: this.getTextureDimensions('upperArm'),
-            lowerArm: this.getTextureDimensions('lowerArm'),
-            head: this.getTextureDimensions('head'),
-        };
-    }
-    getTextureDimensions(key) {
-        const texture = this.textures.get(key);
-
-        const w = texture.getSourceImage().width;
-        const h = texture.getSourceImage().height;
-        return { w, h };
-    }
-
-    createGround() {
-        const height = 25;
-        const pixelsPerMeter = 30; // 30 pixels equals 1 meter
-
-        let floorBody = this.world.createBody({
-            type: 'static',
-            position: new pl.Vec2(this.w / 2 / pixelsPerMeter, this.h / pixelsPerMeter)
-        });
-
-        let floorShape = new pl.Box((this.w / 2) / pixelsPerMeter, height / pixelsPerMeter);
-        const fixture = floorBody.createFixture({
-            shape: floorShape,
-            friction: 0.8,
-            restitution: 0.1 // Low bounce
-        });
-
-        fixture.setFilterData({
-            categoryBits: CATEGORY_GROUND,
-            maskBits: CATEGORY_BODYPARTS,
-            groupIndex: 0
-        });
-
-    }
-    drawPlanckDebug() {
-        if (!this.debugGraphics || !this.world) return;
-
-        const g = this.debugGraphics;
-        g.clear();
-
-        g.lineStyle(2, 0x00ff00, 1);
-        g.fillStyle(0x00ff00, 0.15);
-
-        for (let body = this.world.getBodyList(); body; body = body.getNext()) {
-            const bodyPos = body.getPosition();
-            const bodyAngle = body.getAngle();
-
-            for (let fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
-                const shape = fixture.getShape();
-                const type = shape.getType();
-
-                if (type === "circle") {
-                    const center = body.getWorldPoint(shape.m_p);
-                    const x = center.x * PPM;
-                    const y = center.y * PPM;
-                    const r = shape.m_radius * PPM;
-
-                    g.strokeCircle(x, y, r);
-                }
-
-                if (type === "polygon") {
-                    const verts = shape.m_vertices.map(v => {
-                        const world = body.getWorldPoint(v);
-                        return {
-                            x: world.x * PPM,
-                            y: world.y * PPM
-                        };
-                    });
-
-                    g.beginPath();
-                    g.moveTo(verts[0].x, verts[0].y);
-
-                    for (let i = 1; i < verts.length; i++) {
-                        g.lineTo(verts[i].x, verts[i].y);
-                    }
-
-                    g.closePath();
-                    g.strokePath();
+        this.w = 1100; this.h = 620; this.groundY = 540;
+        this.bestScore = this.registry.get('best') || 0;
+        this.state = 'intro'; this.accumulator = 0; this.score = 0;
+        this.touch = new Map(); this.obstacles = []; this.pitCreated = false;
+        this.rules = new Athletics(this.bestScore);
+        this.world = new pl.World(pl.Vec2(WORLD_DEFAULTS.gravityX, WORLD_DEFAULTS.gravityY));
+        this.add.tileSprite(0, 0, this.w, this.h, 'background_slice').setOrigin(0).setScrollFactor(0);
+        this.ground = this.world.createBody();
+        this.ground.createFixture(pl.Edge(pl.Vec2(-10000, px2m(this.groundY)), pl.Vec2(10000, px2m(this.groundY))), { friction: 1, restitution: 0.2, filterCategoryBits: CATEGORY_GROUND, filterMaskBits: 0xffff, userData: { name: 'track' } });
+        this.add.rectangle(0, this.groundY, this.w, 80, 0xa55540).setOrigin(0).setScrollFactor(0);
+        const dimensions = {};
+        for (const key of ['body', 'pelvis', 'thigh', 'leg', 'foot', 'upperArm', 'lowerArm', 'head']) {
+            const source = this.textures.get(key).getSourceImage();
+            dimensions[key] = { w: source.width, h: source.height };
+        }
+        this.runner = new Runner(this, this.world, this.w, this.h, dimensions);
+        this.startX = m2px(this.runner.body.body.getPosition().x);
+        // Athletics uses ten Box2D units per displayed metre.
+        this.hurdleX = 50 * PPM * 10;
+        this.pitX = SAND_PIT_AT;
+        for (let metre = -10; metre <= 110; metre += 5) {
+            const x = metre * PPM * 10;
+            this.add.rectangle(x, this.groundY + 10, 3, 20, 0xffffff);
+            this.add.text(x, this.groundY + 24, `${metre} m`, { fontSize: '18px' }).setOrigin(0.5, 0);
+        }
+        if (this.bestScore > 0) this.add.text(this.bestScore * PPM * 10, 190, `Best: ${this.bestScore.toFixed(1)} m`, { fontSize: '22px' });
+        this.distanceText = this.add.text(550, 25, '', { fontSize: '28px' }).setOrigin(0.5).setScrollFactor(0).setDepth(10);
+        this.message = this.add.text(550, 150, 'QWOP\nClick or press Q/W/O/P to start\nH: help • R: restart', { fontSize: '26px', align: 'center', backgroundColor: '#172238', padding: { x: 22, y: 16 } }).setOrigin(0.5).setScrollFactor(0).setDepth(20);
+        this.keys = this.input.keyboard.addKeys('Q,W,O,P,R,SPACE,H');
+        this.buttons = {};
+        this.input.addPointer(3);
+        for (const [i, key] of ['Q', 'W', 'O', 'P'].entries()) {
+            const button = this.add.image([60, 135, 965, 1040][i], 65, key.toLowerCase()).setScrollFactor(0).setDepth(30).setInteractive();
+            button.on('pointerdown', pointer => { this.touch.set(pointer.id, key); this.start(); });
+            button.on('pointerout', pointer => this.touch.delete(pointer.id));
+            this.buttons[key] = button;
+        }
+        for (const [label, left, right] of [['HIPS', 'Q', 'W'], ['KNEES', 'O', 'P']]) {
+            const a = this.buttons[left], b = this.buttons[right];
+            const x = (a.x + b.x) / 2;
+            const y = Math.max(a.y + a.displayHeight / 2, b.y + b.displayHeight / 2) + 8;
+            this.add.text(x, y, label, { fontFamily: 'Arial', fontSize: '20px', fontStyle: 'bold', color: '#ffffff' })
+                .setOrigin(0.5, 0).setScrollFactor(0).setDepth(30);
+        }
+        this.input.on('pointerup', pointer => this.touch.delete(pointer.id));
+        this.input.on('pointerdown', () => this.start());
+        this.onBlur = () => { this.touch.clear(); this.input.keyboard.resetKeys(); if (this.state === 'running') this.help(); };
+        this.game.events.on('blur', this.onBlur);
+        this.events.once('shutdown', () => { this.game.events.off('blur', this.onBlur); this.world = null; });
+        // Box2D Add is per manifold point. Planck begin-contact alone misses
+        // new points on an already touching foot, so compare point IDs in pre-solve.
+        this.world.on('pre-solve', (contact, oldManifold) => {
+            if (this.state !== 'running') return;
+            const a = contact.getFixtureA(), b = contact.getFixtureB();
+            const manifold = contact.getManifold();
+            const worldManifold = contact.getWorldManifold(null);
+            if (!worldManifold) return;
+            for (let i = 0; i < manifold.pointCount; i++) {
+                const feature = manifold.points[i].id.cf;
+                if (oldManifold.points.slice(0, oldManifold.pointCount).some(point =>
+                    ['indexA', 'indexB', 'typeA', 'typeB'].every(key => point.id.cf[key] === feature[key]))) continue;
+                const point = worldManifold.points[i];
+                const velocityA = a.getBody().getLinearVelocityFromWorldPoint(point);
+                const velocityB = b.getBody().getLinearVelocityFromWorldPoint(point);
+                const speed = pl.Vec2.sub(velocityA, velocityB).length();
+                for (const [part, other] of [[a, b], [b, a]]) {
+                    const effect = this.rules.contactAdded(part.getUserData()?.name, other.getUserData()?.name, point, speed);
+                    if (effect?.burst) this.burst(point);
                 }
             }
-        }
-
-        // Joint anchors
-        g.fillStyle(0xff0000, 1);
-
-        for (let joint = this.world.getJointList(); joint; joint = joint.getNext()) {
-            const a = joint.getAnchorA();
-            const b = joint.getAnchorB();
-
-            g.fillCircle(a.x * PPM, a.y * PPM, 4);
-            g.fillCircle(b.x * PPM, b.y * PPM, 4);
-
-            g.lineStyle(1, 0xff0000, 0.6);
-            g.lineBetween(a.x * PPM, a.y * PPM, b.x * PPM, b.y * PPM);
-        }
-    }
-
-    drawBackground() {
-        for (let i = 0; i < this.w * SCALE; i++) {
-            this.add.image(i, 0, "background_slice")
-                .setDisplaySize(1, this.h)
-                .setOrigin(0, 0);
-        }
-
-        for (let i = 1000; i < this.w * SCALE; i += 1000) {
-            this.add.image(i, 503, "marker").setOrigin(0, 0);
-        }
-    }
-
-
-    createRunner() {
-        if (this.score > this.bestScore) {
-            this.bestScore = this.score;
-            this.score = 0;
-        }
-        this.runner = new Runner(
-            this,
-            this.world,
-            this.w,
-            this.h,
-            this.runnerDimensions
-        );
-    }
-
-    createUi() {
-        this.distanceText = this.add.text(this.w / 2 - 100, 80, "Distance: 0.00 m", {
-            fontFamily: "Arial",
-            fontSize: "24px",
-            color: "#ffffff",
-            fontStyle: "bold"
-        }).setScrollFactor(0);
-
-        this.bestScoreText = this.add.text(
-            this.w / 2 - 110,
-            110,
-            "Best Score: 0.00m",
-            {
-                fontFamily: "Arial",
-                fontSize: "24px",
-                color: "#ffffff",
-                fontStyle: "bold"
-            }
-        ).setScrollFactor(0);
-    }
-
-    createInput() {
-        this.keys = this.input.keyboard.addKeys({
-            Q: Phaser.Input.Keyboard.KeyCodes.Q,
-            W: Phaser.Input.Keyboard.KeyCodes.W,
-            O: Phaser.Input.Keyboard.KeyCodes.O,
-            P: Phaser.Input.Keyboard.KeyCodes.P,
-            R: Phaser.Input.Keyboard.KeyCodes.R,
-            SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
-
-        this.Qbutton = this.add.image(60, 60, "q")
-            .setInteractive()
-            .setScrollFactor(0)
-            .setOrigin(0.5);
-
-        this.Wbutton = this.add.image(130, 60, "w")
-            .setInteractive()
-            .setScrollFactor(0)
-            .setOrigin(0.5);
-
-        this.Obutton = this.add.image(950, 60, "o")
-            .setInteractive()
-            .setScrollFactor(0)
-            .setOrigin(0.5);
-
-        this.Pbutton = this.add.image(1020, 60, "p")
-            .setInteractive()
-            .setScrollFactor(0)
-            .setOrigin(0.5);
-
-        this.Qbutton.on("pointerdown", () => this.keys.Q.isDown = true);
-        this.Wbutton.on("pointerdown", () => this.keys.W.isDown = true);
-        this.Obutton.on("pointerdown", () => this.keys.O.isDown = true);
-        this.Pbutton.on("pointerdown", () => this.keys.P.isDown = true);
-
-        this.Qbutton.on("pointerup", () => this.keys.Q.isUp = true);
-        this.Wbutton.on("pointerup", () => this.keys.W.isUp = true);
-        this.Obutton.on("pointerup", () => this.keys.O.isUp = true);
-        this.Pbutton.on("pointerup", () => this.keys.P.isUp = true);
+    }
+    burst(point) {
+        const ring = this.add.circle(m2px(point.x), m2px(point.y), 40, 0xffe080, 0.7).setDepth(5);
+        this.tweens.add({ targets: ring, alpha: 0, scale: 1.5, duration: 400, onComplete: () => ring.destroy() });
+    }
+    createPit() {
+        this.pitCreated = true;
+        this.add.rectangle(this.pitX, this.groundY, 1913.1, 80.9, 0xd8bb7b).setOrigin(0);
+        this.add.rectangle(this.pitX, this.groundY - 2, 12, 5, 0xffffff);
+        this.add.text(this.pitX, this.groundY - 35, '100 m ? long jump', { fontSize: '22px' });
     }
 
-    update() {
-        if (!this.runner) return;
+    start() {
+        if (this.state === 'intro' || this.state === 'help') { this.state = 'running'; this.message.setVisible(false); this.accumulator = 0; }
+    }
+    help() {
+        if (this.state === 'help') return this.start();
+        if (this.state !== 'running') return;
+        this.state = 'help'; this.touch.clear();
+        this.message.setText('Q / W: opposing thigh and arm motion\nO / P: opposing calf motion\nReach the hurdle at 50 m and sand at 100 m\nClick or press H to resume').setVisible(true);
+    }
+    end(reason) {
+        this.state = 'over'; this.runner.releaseMotors();
+        this.bestScore = this.rules.highScore; this.registry.set('best', this.bestScore);
+        this.message.setText(`${reason}: ${this.score.toFixed(1)} metres\nBest: ${this.bestScore.toFixed(1)} m\nSpace or R to restart`).setVisible(true);
+    }
+    createHurdle() {
+        const x = this.hurdleX;
+        // Athletics' explicit hurdle dimensions, filters and local anchors.
+        // Only density/friction inherit Shape defaults; no Hurdle symbols supplied.
+        const yOffset = this.groundY - (429.8 - 146.8 / 2);
+        const base = this.world.createDynamicBody({ position: pl.Vec2(px2m(x), px2m(343 + yOffset)), awake: false });
+        base.createFixture(pl.Box(px2m(67), px2m(12)), { density: 1, friction: 0.2, filterCategoryBits: CATEGORY_HURDLE, filterMaskBits: 65529 });
+        const top = this.world.createDynamicBody({ position: pl.Vec2(px2m(x + 34.6), px2m(194.3 + yOffset)), awake: false });
+        top.createFixture(pl.Box(px2m(21.5), px2m(146)), { density: 1, friction: 0.2, filterCategoryBits: CATEGORY_HURDLE, filterMaskBits: 65531 });
+        this.world.createJoint(pl.RevoluteJoint({ bodyA: top, bodyB: base,
+            localAnchorA: pl.Vec2(px2m(7.2), px2m(149.2)), localAnchorB: pl.Vec2(px2m(41.8), px2m(0.5)),
+            enableLimit: true, lowerAngle: 0, upperAngle: 0 }));
+        for (const [body, w, h] of [[base, 134, 24], [top, 43, 292]]) this.obstacles.push({ body, sprite: this.add.rectangle(0, 0, w, h, 0xf0e4db) });
+    }
 
-        if (
-            Phaser.Input.Keyboard.JustDown(this.keys.R) ||
-            Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
-        ) {
-
-            this.runner.destroy();
-            this.createRunner();
+    update(time, delta) {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.R) || (Phaser.Input.Keyboard.JustDown(this.keys.SPACE) && this.state === 'over')) { this.scene.restart(); return; }
+        if (Phaser.Input.Keyboard.JustDown(this.keys.H)) this.help();
+        const controls = {};
+        for (const key of ['Q', 'W', 'O', 'P']) {
+            controls[key] = { isDown: this.keys[key].isDown || [...this.touch.values()].includes(key) };
+            this.buttons[key].setTint(controls[key].isDown ? 0xffcc66 : 0xffffff);
         }
-
-        if (this.runner.updateControls) {
-            this.runner.updateControls(this.keys);
+        if (this.state === 'intro' && Object.values(controls).some(key => key.isDown)) this.start();
+        if (this.state === 'running' || (this.state === 'over' && !this.rules.pausedOnLanding)) {
+            this.accumulator += Math.min(delta / 1000, 0.1);
+            while (this.accumulator >= STEP && !this.rules.pausedOnLanding) {
+                if (this.state === 'running') this.runner.updateControls(controls);
+                else this.runner.updateAnkles();
+                this.runner.stabilize();
+                this.world.step(STEP, WORLD_DEFAULTS.iterations, WORLD_DEFAULTS.iterations);
+                this.rules.timeElapsed += STEP;
+                this.accumulator -= STEP;
+                this.rules.everyFrame(this.runner.body.body.getWorldCenter().x, this.runner.head.body.getLinearVelocity().x);
+                this.score = this.rules.score;
+                const x = m2px(this.runner.body.body.getWorldCenter().x);
+                if (!this.obstacles.length && x > this.hurdleX - 1000) this.createHurdle();
+                if (!this.pitCreated && x > this.pitX - 1300) this.createPit();
+                if (this.state === 'running' && this.rules.GameOver) this.end(this.rules.JumpLanded ? 'Jump landed' : 'You fell');
+            }
         }
-
-        if (this.runner.stabilize) {
-            this.runner.stabilize();
-        }
-        //this.runner.applySelfBalanceTorque();
-
-        //this.drawPlanckDebug();
-
-        this.world.step(1 / 60, 12, 6);
-
         this.runner.syncSprites();
-
-        const torso = this.runner.body.body;
-        const torsoX = m2px(torso.getPosition().x);
-
-        this.cameras.main.scrollX = Phaser.Math.Linear(
-            this.cameras.main.scrollX,
-            Math.max(0, torsoX - this.w * 0.35),
-            0.08
-        );
-        this.runner.distance = torso.getPosition().x / 10;
-        this.score = this.runner.distance;
-        if (this.runner.distance !== undefined) {
-            this.distanceText.setText(
-                `Distance: ${this.score.toFixed(2)} m`
-            );
-            this.bestScoreText.setText(
-                `Best Score: ${this.bestScore.toFixed(2)} m`
-            );
-        }
-        if ((this.runner.body.sprite.angle > 90 || this.runner.body.sprite.angle < -89)
-            && (this.runner.head.sprite.y > 500)) {
-            this.runner.destroy();
-            this.createRunner();
-        }
+        for (const { body, sprite } of this.obstacles) { sprite.setPosition(m2px(body.getPosition().x), m2px(body.getPosition().y)); sprite.rotation = body.getAngle(); }
+        this.cameras.main.scrollX = m2px(this.runner.body.body.getWorldCenter().x) * 0.92 - 220;
+        this.distanceText.setText(`${this.score.toFixed(1)} metres    Best: ${this.bestScore.toFixed(1)} m`);
     }
 }

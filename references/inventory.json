@@ -1,0 +1,3733 @@
+{
+  "source": "https://raw.githubusercontent.com/selenite-cc/flasharchive/main/QWOP.swf",
+  "sha256": "9fa3d3c459500b73cd148759579036cfc03a681c79b89c65a2bda9aaca93670e",
+  "compressedBytes": 137929,
+  "frameRate": 30.0,
+  "stageBoundsPixels": {
+    "xmin": 0.0,
+    "xmax": 640.0,
+    "ymin": 0.0,
+    "ymax": 400.0
+  },
+  "symbols": {
+    "142": "QWOP_fla.Mute_mc_38",
+    "138": "QWOP_fla.W_mc_5",
+    "135": "QWOP_fla.Q_mc_4",
+    "132": "QWOP_fla.P_mc_3",
+    "129": "QWOP_fla.O_mc_2",
+    "120": "DemoView1",
+    "119": "DemoWorld1",
+    "117": "WhiteLine",
+    "114": "CLUARM",
+    "110": "CLFARM",
+    "106": "CLCALF",
+    "102": "CLFOOT",
+    "98": "CLTHIGH",
+    "94": "CBODY",
+    "90": "CRUARM",
+    "86": "CRCALF",
+    "82": "CRTHIGH",
+    "78": "CRFARM",
+    "74": "CHEAD",
+    "70": "CRFOOT",
+    "66": "ConcreteBlock",
+    "63": "Track",
+    "61": "BatsmanJoint",
+    "60": "DemoCursor",
+    "59": "HurdleBase",
+    "56": "HurdleTop",
+    "53": "SandBoard",
+    "48": "SandPit",
+    "43": "Burst_o",
+    "41": "Howzat",
+    "36": "JumpEnding",
+    "26": "Intro",
+    "21": "Help",
+    "10": "batjoint2",
+    "8": "GroundBox",
+    "5": "COF",
+    "4": "Crunch_sound",
+    "3": "Ehh_sound",
+    "2": "Step_sound",
+    "1": "GS1",
+    "0": "wck.Athletics"
+  },
+  "sprites": {
+    "8": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 7,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "10": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 9,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "12": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 11,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "14": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 13,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "21": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 12,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 194.0,
+            "ty": 90.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 14,
+          "matrix": {
+            "a": 1.0,
+            "b": 0,
+            "c": 0,
+            "d": 1.34375,
+            "tx": 188.95,
+            "ty": 96.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 5,
+          "move": false,
+          "symbolId": 16,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -19.6,
+            "ty": -22.65
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 6,
+          "move": false,
+          "symbolId": 17,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 196.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 7,
+          "move": false,
+          "symbolId": 20,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 34.55,
+            "ty": 15.2
+          }
+        }
+      ]
+    },
+    "26": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 12,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 194.0,
+            "ty": 90.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 14,
+          "matrix": {
+            "a": 1.0,
+            "b": 0,
+            "c": 0,
+            "d": 1.0416717529296875,
+            "tx": 188.95,
+            "ty": 95.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 5,
+          "move": false,
+          "symbolId": 22,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 64.4,
+            "ty": 4.35
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 6,
+          "move": false,
+          "symbolId": 23,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 173.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 7,
+          "move": false,
+          "symbolId": 25,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 35.55,
+            "ty": 38.2
+          }
+        }
+      ]
+    },
+    "36": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 14,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 189.95,
+            "ty": 97.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 28,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 64.4,
+            "ty": 16.35
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 4,
+          "move": false,
+          "symbolId": 30,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 66.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 5,
+          "move": false,
+          "symbolId": 31,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 6,
+          "move": false,
+          "symbolId": 32,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 161.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 7,
+          "move": false,
+          "symbolId": 33,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 90.0,
+            "ty": 121.55
+          },
+          "name": "ScoreSlot"
+        },
+        {
+          "frame": 1,
+          "depth": 9,
+          "move": false,
+          "symbolId": 34,
+          "matrix": {
+            "a": 0.59259033203125,
+            "b": 0,
+            "c": 0,
+            "d": 0.59259033203125,
+            "tx": 26.0,
+            "ty": 32.15
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 10,
+          "move": false,
+          "symbolId": 35,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 108.0,
+            "ty": 88.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 12,
+          "move": false,
+          "symbolId": 34,
+          "matrix": {
+            "a": 0.59259033203125,
+            "b": 0,
+            "c": 0,
+            "d": 0.59259033203125,
+            "tx": 350.45,
+            "ty": 32.15
+          }
+        }
+      ]
+    },
+    "41": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 14,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 189.95,
+            "ty": 97.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 37,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 64.4,
+            "ty": 9.35
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 4,
+          "move": false,
+          "symbolId": 38,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 52.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 5,
+          "move": false,
+          "symbolId": 31,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": -33.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 6,
+          "move": false,
+          "symbolId": 32,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 161.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 7,
+          "move": false,
+          "symbolId": 39,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 90.0,
+            "ty": 88.55
+          },
+          "name": "ScoreSlot"
+        },
+        {
+          "frame": 1,
+          "depth": 9,
+          "move": false,
+          "symbolId": 34,
+          "matrix": {
+            "a": 0.59259033203125,
+            "b": 0,
+            "c": 0,
+            "d": 0.59259033203125,
+            "tx": 26.0,
+            "ty": 32.15
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 10,
+          "move": false,
+          "symbolId": 40,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 116.95,
+            "ty": 130.2
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 12,
+          "move": false,
+          "symbolId": 34,
+          "matrix": {
+            "a": 0.59259033203125,
+            "b": 0,
+            "c": 0,
+            "d": 0.59259033203125,
+            "tx": 350.45,
+            "ty": 32.15
+          }
+        }
+      ]
+    },
+    "43": {
+      "frames": 20,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 42,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -0.15,
+            "ty": -0.8
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.1358184814453125,
+            "b": 0,
+            "c": 0,
+            "d": 1.1358184814453125,
+            "tx": -0.15,
+            "ty": -0.95
+          }
+        },
+        {
+          "frame": 3,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.3549041748046875,
+            "b": 0,
+            "c": 0,
+            "d": 1.3549041748046875,
+            "tx": -0.2,
+            "ty": -1.3
+          }
+        },
+        {
+          "frame": 4,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.6572113037109375,
+            "b": 0,
+            "c": 0,
+            "d": 1.6572113037109375,
+            "tx": -0.05,
+            "ty": -0.05
+          }
+        },
+        {
+          "frame": 5,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.544281005859375,
+            "b": 0,
+            "c": 0,
+            "d": 1.544281005859375,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 6,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.438629150390625,
+            "b": 0,
+            "c": 0,
+            "d": 1.438629150390625,
+            "tx": 0.1,
+            "ty": 0.05
+          }
+        },
+        {
+          "frame": 7,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.34027099609375,
+            "b": 0,
+            "c": 0,
+            "d": 1.34027099609375,
+            "tx": 0.15,
+            "ty": 0.1
+          }
+        },
+        {
+          "frame": 8,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.24920654296875,
+            "b": 0,
+            "c": 0,
+            "d": 1.24920654296875,
+            "tx": 0.15,
+            "ty": 0.15
+          }
+        },
+        {
+          "frame": 9,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.165435791015625,
+            "b": 0,
+            "c": 0,
+            "d": 1.165435791015625,
+            "tx": 0.2,
+            "ty": 0.2
+          }
+        },
+        {
+          "frame": 10,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.0889129638671875,
+            "b": 0,
+            "c": 0,
+            "d": 1.0889129638671875,
+            "tx": 0.25,
+            "ty": 0.25
+          }
+        },
+        {
+          "frame": 11,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 1.0196990966796875,
+            "b": 0,
+            "c": 0,
+            "d": 1.0196990966796875,
+            "tx": 0.3,
+            "ty": 0.25
+          }
+        },
+        {
+          "frame": 12,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.9577789306640625,
+            "b": 0,
+            "c": 0,
+            "d": 0.9577789306640625,
+            "tx": 0.3,
+            "ty": 0.3
+          }
+        },
+        {
+          "frame": 13,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.9031219482421875,
+            "b": 0,
+            "c": 0,
+            "d": 0.9031219482421875,
+            "tx": 0.35,
+            "ty": 0.3
+          }
+        },
+        {
+          "frame": 14,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.8557586669921875,
+            "b": 0,
+            "c": 0,
+            "d": 0.8557586669921875,
+            "tx": 0.35,
+            "ty": 0.3
+          }
+        },
+        {
+          "frame": 15,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.815704345703125,
+            "b": 0,
+            "c": 0,
+            "d": 0.815704345703125,
+            "tx": 0.45,
+            "ty": 0.35
+          }
+        },
+        {
+          "frame": 16,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.7829132080078125,
+            "b": 0,
+            "c": 0,
+            "d": 0.7829132080078125,
+            "tx": 0.45,
+            "ty": 0.4
+          }
+        },
+        {
+          "frame": 17,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.757415771484375,
+            "b": 0,
+            "c": 0,
+            "d": 0.757415771484375,
+            "tx": 0.5,
+            "ty": 0.4
+          }
+        },
+        {
+          "frame": 18,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.73919677734375,
+            "b": 0,
+            "c": 0,
+            "d": 0.73919677734375,
+            "tx": 0.45,
+            "ty": 0.45
+          }
+        },
+        {
+          "frame": 19,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.728271484375,
+            "b": 0,
+            "c": 0,
+            "d": 0.728271484375,
+            "tx": 0.45,
+            "ty": 0.45
+          }
+        },
+        {
+          "frame": 20,
+          "depth": 3,
+          "move": true,
+          "matrix": {
+            "a": 0.7246246337890625,
+            "b": 0,
+            "c": 0,
+            "d": 0.7246246337890625,
+            "tx": 0.35,
+            "ty": -0.3
+          }
+        }
+      ]
+    },
+    "48": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 17,
+          "move": false,
+          "symbolId": 45,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 894.45,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 18,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -62.1,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 19,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -39.1,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 20,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -16.1,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 21,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 6.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 22,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 29.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 23,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 52.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 24,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 75.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 25,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 98.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 26,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 121.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 27,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 144.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 28,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 167.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 29,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 190.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 30,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 213.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 31,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 236.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 32,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 259.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 33,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 282.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 34,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 305.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 35,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 328.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 36,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 351.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 37,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 374.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 38,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 397.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 39,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 420.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 40,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 443.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 41,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 466.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 42,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 489.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 43,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 512.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 44,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 535.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 45,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 558.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 46,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 581.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 47,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 604.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 48,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 627.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 49,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 650.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 50,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 673.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 51,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 696.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 52,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 719.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 53,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 742.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 54,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 765.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 55,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 788.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 56,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 811.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 57,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 834.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 58,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 857.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 59,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 880.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 60,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 903.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 61,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 926.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 62,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 949.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 63,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 972.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 64,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 995.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 65,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1018.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 66,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1041.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 67,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1064.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 68,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1087.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 69,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1110.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 70,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1133.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 71,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1156.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 72,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1179.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 73,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1202.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 74,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1225.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 75,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1248.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 76,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1271.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 77,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1294.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 78,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1317.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 79,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1340.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 80,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1363.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 81,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1386.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 82,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1409.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 83,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1432.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 84,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1455.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 85,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1478.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 86,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1501.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 87,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1524.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 88,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1547.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 89,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1570.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 90,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1593.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 91,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1616.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 92,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1639.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 93,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1662.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 94,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1685.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 95,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1708.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 96,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1731.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 97,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1754.9,
+            "ty": -40.45
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 98,
+          "move": false,
+          "symbolId": 47,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 1777.9,
+            "ty": -40.45
+          }
+        }
+      ]
+    },
+    "53": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 50,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 1,
+          "depth": 4,
+          "move": false,
+          "symbolId": 52,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -430.85,
+            "ty": -96.5
+          }
+        }
+      ]
+    },
+    "56": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 55,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "59": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 58,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "60": {
+      "frames": 1,
+      "placements": []
+    },
+    "61": {
+      "frames": 1,
+      "placements": []
+    },
+    "63": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 2,
+          "move": false,
+          "symbolId": 62,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "65": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 64,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "66": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 65,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "69": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 68,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "70": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 69,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": -0.6,
+            "ty": -0.1
+          }
+        }
+      ]
+    },
+    "73": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 72,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "74": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 73,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.75,
+            "ty": -2.75
+          }
+        }
+      ]
+    },
+    "77": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 76,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "78": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 77,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": -0.05,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "81": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 80,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "82": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 81,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": -0.05,
+            "ty": -0.05
+          }
+        }
+      ]
+    },
+    "85": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 84,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "86": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 85,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "89": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 88,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "90": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 89,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.0,
+            "ty": 0.05
+          }
+        }
+      ]
+    },
+    "93": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 92,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "94": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 93,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.0,
+            "ty": 0.05
+          }
+        }
+      ]
+    },
+    "97": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 96,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "98": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 97,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.35,
+            "ty": -1.45
+          }
+        }
+      ]
+    },
+    "101": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 100,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "102": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 101,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "105": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 104,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "106": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 105,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": 0.4,
+            "ty": -1.05
+          }
+        }
+      ]
+    },
+    "109": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 108,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "110": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 109,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": -0.05,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "113": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 112,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "114": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 113,
+          "matrix": {
+            "a": 2.0,
+            "b": 0,
+            "c": 0,
+            "d": 2.0,
+            "tx": -0.05,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "117": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 116,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "118": {
+      "frames": 1,
+      "placements": []
+    },
+    "119": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 117,
+          "matrix": {
+            "a": 1.82470703125,
+            "b": 0,
+            "c": 0,
+            "d": 1.4438323974609375,
+            "tx": 189.4,
+            "ty": 277.4
+          },
+          "name": "Sline"
+        },
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 118,
+          "matrix": {
+            "a": 0.99078369140625,
+            "b": 0.1320953369140625,
+            "c": -0.1320953369140625,
+            "d": 0.99078369140625,
+            "tx": -15.95,
+            "ty": -32.35
+          },
+          "name": "viewtarget"
+        },
+        {
+          "frame": 1,
+          "depth": 5,
+          "move": false,
+          "symbolId": 114,
+          "matrix": {
+            "a": 0.66448974609375,
+            "b": 0.7463836669921875,
+            "c": -0.7463836669921875,
+            "d": 0.66448974609375,
+            "tx": 179.0,
+            "ty": -116.45
+          },
+          "name": "cluarm"
+        },
+        {
+          "frame": 1,
+          "depth": 7,
+          "move": false,
+          "symbolId": 110,
+          "matrix": {
+            "a": 0.3141632080078125,
+            "b": -0.948638916015625,
+            "c": 0.948638916015625,
+            "d": 0.3141632080078125,
+            "tx": 235.95,
+            "ty": -122.4
+          },
+          "name": "clfarm"
+        },
+        {
+          "frame": 1,
+          "depth": 9,
+          "move": false,
+          "symbolId": 106,
+          "matrix": {
+            "a": -0.0107269287109375,
+            "b": -0.9986419677734375,
+            "c": 0.9986419677734375,
+            "d": -0.0107421875,
+            "tx": 119.45,
+            "ty": 220.9
+          },
+          "name": "clcalf"
+        },
+        {
+          "frame": 1,
+          "depth": 11,
+          "move": false,
+          "symbolId": 102,
+          "matrix": {
+            "a": 0.9880218505859375,
+            "b": 0.14215087890625,
+            "c": -0.14215087890625,
+            "d": 0.9880218505859375,
+            "tx": 150.5,
+            "ty": 324.05
+          },
+          "name": "clfoot"
+        },
+        {
+          "frame": 1,
+          "depth": 13,
+          "move": false,
+          "symbolId": 98,
+          "matrix": {
+            "a": -0.3938446044921875,
+            "b": -0.9160308837890625,
+            "c": 0.9160308837890625,
+            "d": -0.3938446044921875,
+            "tx": 100.8,
+            "ty": 64.6
+          },
+          "name": "clthigh"
+        },
+        {
+          "frame": 1,
+          "depth": 15,
+          "move": false,
+          "symbolId": 94,
+          "matrix": {
+            "a": 0.3141632080078125,
+            "b": -0.948638916015625,
+            "c": 0.948638916015625,
+            "d": 0.3141632080078125,
+            "tx": 101.0,
+            "ty": -77.05
+          },
+          "name": "cbody"
+        },
+        {
+          "frame": 1,
+          "depth": 17,
+          "move": false,
+          "symbolId": 90,
+          "matrix": {
+            "a": 0.8929290771484375,
+            "b": -0.448638916015625,
+            "c": 0.448638916015625,
+            "d": 0.8929290771484375,
+            "tx": 46.6,
+            "ty": -144.65
+          },
+          "name": "cruarm"
+        },
+        {
+          "frame": 1,
+          "depth": 19,
+          "move": false,
+          "symbolId": 86,
+          "matrix": {
+            "a": 0.6782379150390625,
+            "b": -0.728302001953125,
+            "c": 0.7283172607421875,
+            "d": 0.678253173828125,
+            "tx": 3.4,
+            "ty": 215.25
+          },
+          "name": "crcalf"
+        },
+        {
+          "frame": 1,
+          "depth": 21,
+          "move": false,
+          "symbolId": 82,
+          "matrix": {
+            "a": 0.1020355224609375,
+            "b": 0.9926300048828125,
+            "c": -0.99261474609375,
+            "d": 0.1020355224609375,
+            "tx": 66.35,
+            "ty": 79.95
+          },
+          "name": "crthigh"
+        },
+        {
+          "frame": 1,
+          "depth": 23,
+          "move": false,
+          "symbolId": 78,
+          "matrix": {
+            "a": -0.190185546875,
+            "b": -0.980255126953125,
+            "c": 0.9802703857421875,
+            "d": -0.1901702880859375,
+            "tx": 14.65,
+            "ty": -49.9
+          },
+          "name": "crfarm"
+        },
+        {
+          "frame": 1,
+          "depth": 25,
+          "move": false,
+          "symbolId": 74,
+          "matrix": {
+            "a": 0.9976348876953125,
+            "b": 0.05792236328125,
+            "c": -0.05792236328125,
+            "d": 0.9976348876953125,
+            "tx": 155.85,
+            "ty": -227.15
+          },
+          "name": "chead"
+        },
+        {
+          "frame": 1,
+          "depth": 27,
+          "move": false,
+          "symbolId": 70,
+          "matrix": {
+            "a": 0.7283172607421875,
+            "b": 0.678253173828125,
+            "c": -0.678253173828125,
+            "d": 0.7283172607421875,
+            "tx": -38.7,
+            "ty": 310.9
+          },
+          "name": "crfoot"
+        },
+        {
+          "frame": 1,
+          "depth": 29,
+          "move": false,
+          "symbolId": 66,
+          "matrix": {
+            "a": 2.2888336181640625,
+            "b": 0,
+            "c": 0,
+            "d": 1.825286865234375,
+            "tx": -1599.85,
+            "ty": 84.25
+          },
+          "name": "__id0_"
+        },
+        {
+          "frame": 1,
+          "depth": 31,
+          "move": false,
+          "symbolId": 63,
+          "matrix": {
+            "a": 1.0,
+            "b": 0,
+            "c": 0,
+            "d": 0.998992919921875,
+            "tx": 1510.0,
+            "ty": 429.75
+          },
+          "name": "track1"
+        },
+        {
+          "frame": 1,
+          "depth": 34,
+          "move": false,
+          "symbolId": 63,
+          "matrix": {
+            "a": 0.999847412109375,
+            "b": 0,
+            "c": 0,
+            "d": 0.99932861328125,
+            "tx": 144.0,
+            "ty": 429.75
+          },
+          "name": "track"
+        },
+        {
+          "frame": 1,
+          "depth": 37,
+          "move": false,
+          "symbolId": 63,
+          "matrix": {
+            "a": 1.0,
+            "b": 0,
+            "c": 0,
+            "d": 0.998992919921875,
+            "tx": -1221.0,
+            "ty": 429.75
+          },
+          "name": "track2"
+        },
+        {
+          "frame": 1,
+          "depth": 40,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.8929290771484375,
+            "b": -0.448638916015625,
+            "c": 0.448638916015625,
+            "d": 0.8929290771484375,
+            "tx": -2.4,
+            "ty": -119.4
+          },
+          "name": "__id1_"
+        },
+        {
+          "frame": 1,
+          "depth": 42,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9673919677734375,
+            "b": 0.2481231689453125,
+            "c": -0.2481231689453125,
+            "d": 0.9673919677734375,
+            "tx": 130.5,
+            "ty": 140.65
+          },
+          "name": "lcjoint"
+        },
+        {
+          "frame": 1,
+          "depth": 44,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9464569091796875,
+            "b": 0.3195343017578125,
+            "c": -0.3195343017578125,
+            "d": 0.9464569091796875,
+            "tx": 126.05,
+            "ty": 317.85
+          },
+          "name": "lankle"
+        },
+        {
+          "frame": 1,
+          "depth": 46,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.223175048828125,
+            "b": -0.9698638916015625,
+            "c": 0.969879150390625,
+            "d": 0.2231903076171875,
+            "tx": -55.8,
+            "ty": 283.6
+          },
+          "name": "rankle"
+        },
+        {
+          "frame": 1,
+          "depth": 48,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": -0.380584716796875,
+            "b": -0.923248291015625,
+            "c": 0.923248291015625,
+            "d": -0.380584716796875,
+            "tx": 63.2,
+            "ty": 164.55
+          },
+          "name": "rcjoint"
+        },
+        {
+          "frame": 1,
+          "depth": 50,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.859039306640625,
+            "b": -0.510101318359375,
+            "c": -1.445281982421875,
+            "d": -2.433929443359375,
+            "tx": 50.4,
+            "ty": -2.7
+          },
+          "name": "rtjoint"
+        },
+        {
+          "frame": 1,
+          "depth": 52,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9673919677734375,
+            "b": 0.2481231689453125,
+            "c": -0.2481231689453125,
+            "d": 0.9673919677734375,
+            "tx": 80.65,
+            "ty": 7.3
+          },
+          "name": "ltjoint"
+        },
+        {
+          "frame": 1,
+          "depth": 54,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9976348876953125,
+            "b": 0.05792236328125,
+            "c": -0.05792236328125,
+            "d": 0.9976348876953125,
+            "tx": 226.05,
+            "ty": -72.5
+          },
+          "name": "__id2_"
+        },
+        {
+          "frame": 1,
+          "depth": 56,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9976348876953125,
+            "b": 0.05792236328125,
+            "c": -0.05792236328125,
+            "d": 0.9976348876953125,
+            "tx": 145.55,
+            "ty": -143.55
+          },
+          "name": "lajoint"
+        },
+        {
+          "frame": 1,
+          "depth": 58,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.8929290771484375,
+            "b": -0.448638916015625,
+            "c": 0.448638916015625,
+            "d": 0.8929290771484375,
+            "tx": 89.75,
+            "ty": -165.7
+          },
+          "name": "rajoint"
+        },
+        {
+          "frame": 1,
+          "depth": 60,
+          "move": false,
+          "symbolId": 61,
+          "matrix": {
+            "a": 0.9976348876953125,
+            "b": 0.05792236328125,
+            "c": -0.05792236328125,
+            "d": 0.9976348876953125,
+            "tx": 144.15,
+            "ty": -183.25
+          },
+          "name": "__id3_"
+        }
+      ]
+    },
+    "120": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 119,
+          "matrix": {
+            "a": 0.9214324951171875,
+            "b": 0,
+            "c": 0,
+            "d": 0.9214324951171875,
+            "tx": -44.6,
+            "ty": -91.2
+          },
+          "name": "world1"
+        }
+      ]
+    },
+    "124": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 123,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "129": {
+      "frames": 2,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 127,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 3,
+          "move": true,
+          "symbolId": 128
+        }
+      ]
+    },
+    "132": {
+      "frames": 2,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 130,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 3,
+          "move": true,
+          "symbolId": 131
+        }
+      ]
+    },
+    "135": {
+      "frames": 2,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 133,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 3,
+          "move": true,
+          "symbolId": 134
+        }
+      ]
+    },
+    "138": {
+      "frames": 2,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 136,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 3,
+          "move": true,
+          "symbolId": 137
+        }
+      ]
+    },
+    "142": {
+      "frames": 2,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 3,
+          "move": false,
+          "symbolId": 140,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        },
+        {
+          "frame": 2,
+          "depth": 1,
+          "move": false,
+          "symbolId": 141,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0.0,
+            "ty": 0.0
+          }
+        }
+      ]
+    },
+    "144": {
+      "frames": 1,
+      "placements": [
+        {
+          "frame": 1,
+          "depth": 1,
+          "move": false,
+          "symbolId": 143,
+          "matrix": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -15.5,
+            "ty": -12.0
+          }
+        }
+      ]
+    }
+  },
+  "shapeBoundsPixels": {
+    "7": {
+      "xmin": -63.05,
+      "xmax": 43.95,
+      "ymin": -63.8,
+      "ymax": 62.2
+    },
+    "9": {
+      "xmin": -0.5,
+      "xmax": 41.0,
+      "ymin": -0.5,
+      "ymax": 41.0
+    },
+    "11": {
+      "xmin": -320.0,
+      "xmax": 320.0,
+      "ymin": -200.0,
+      "ymax": 200.0
+    },
+    "13": {
+      "xmin": -192.4,
+      "xmax": 192.45,
+      "ymin": -99.45,
+      "ymax": 99.45
+    },
+    "31": {
+      "xmin": 79.9,
+      "xmax": 298.0,
+      "ymin": 116.2,
+      "ymax": 150.55
+    },
+    "34": {
+      "xmin": -27.0,
+      "xmax": 27.0,
+      "ymin": -38.5,
+      "ymax": 38.5
+    },
+    "42": {
+      "xmin": -10.35,
+      "xmax": 10.45,
+      "ymin": -10.35,
+      "ymax": 10.45
+    },
+    "45": {
+      "xmin": -908.7,
+      "xmax": 956.55,
+      "ymin": -10.45,
+      "ymax": 40.45
+    },
+    "47": {
+      "xmin": 0.0,
+      "xmax": 23.0,
+      "ymin": 0.0,
+      "ymax": 30.0
+    },
+    "50": {
+      "xmin": -430.05,
+      "xmax": -64.35,
+      "ymin": -107.25,
+      "ymax": 3.0
+    },
+    "55": {
+      "xmin": -21.95,
+      "xmax": 21.0,
+      "ymin": -146.45,
+      "ymax": 145.5
+    },
+    "58": {
+      "xmin": -67.45,
+      "xmax": 66.5,
+      "ymin": -12.45,
+      "ymax": 11.5
+    },
+    "62": {
+      "xmin": -683.15,
+      "xmax": 682.9,
+      "ymin": -73.4,
+      "ymax": 73.55
+    },
+    "64": {
+      "xmin": -125.9,
+      "xmax": 125.85,
+      "ymin": -149.25,
+      "ymax": 149.25
+    },
+    "68": {
+      "xmin": -26.7,
+      "xmax": 27.3,
+      "ymin": -14.45,
+      "ymax": 14.55
+    },
+    "72": {
+      "xmin": -21.85,
+      "xmax": 21.1,
+      "ymin": -25.1,
+      "ymax": 27.85
+    },
+    "76": {
+      "xmin": -44.5,
+      "xmax": 44.55,
+      "ymin": -13.5,
+      "ymax": 13.5
+    },
+    "80": {
+      "xmin": -53.0,
+      "xmax": 53.05,
+      "ymin": -19.95,
+      "ymax": 20.0
+    },
+    "84": {
+      "xmin": -100.0,
+      "xmax": 100.0,
+      "ymin": -29.9,
+      "ymax": 29.95
+    },
+    "88": {
+      "xmin": -39.0,
+      "xmax": 39.0,
+      "ymin": -15.0,
+      "ymax": 14.95
+    },
+    "92": {
+      "xmin": -65.55,
+      "xmax": 65.55,
+      "ymin": -28.55,
+      "ymax": 28.5
+    },
+    "96": {
+      "xmin": -50.7,
+      "xmax": 50.35,
+      "ymin": -19.25,
+      "ymax": 20.7
+    },
+    "100": {
+      "xmin": -27.0,
+      "xmax": 27.0,
+      "ymin": -13.5,
+      "ymax": 13.5
+    },
+    "104": {
+      "xmin": -50.2,
+      "xmax": 49.8,
+      "ymin": -14.45,
+      "ymax": 15.5
+    },
+    "108": {
+      "xmin": -34.95,
+      "xmax": 35.0,
+      "ymin": -11.0,
+      "ymax": 11.0
+    },
+    "112": {
+      "xmin": -37.0,
+      "xmax": 37.05,
+      "ymin": -12.45,
+      "ymax": 12.45
+    },
+    "116": {
+      "xmin": -18.5,
+      "xmax": 18.5,
+      "ymin": -55.0,
+      "ymax": 55.0
+    },
+    "121": {
+      "xmin": -0.45,
+      "xmax": 640.45,
+      "ymin": 383.5,
+      "ymax": 426.3
+    },
+    "123": {
+      "xmin": -687.3,
+      "xmax": 687.3,
+      "ymin": -419.75,
+      "ymax": 419.75
+    },
+    "127": {
+      "xmin": -23.9,
+      "xmax": 23.95,
+      "ymin": -23.9,
+      "ymax": 23.95
+    },
+    "128": {
+      "xmin": -21.5,
+      "xmax": 21.55,
+      "ymin": -21.5,
+      "ymax": 21.55
+    },
+    "130": {
+      "xmin": -23.9,
+      "xmax": 23.95,
+      "ymin": -23.9,
+      "ymax": 23.95
+    },
+    "131": {
+      "xmin": -21.5,
+      "xmax": 21.55,
+      "ymin": -21.5,
+      "ymax": 21.55
+    },
+    "133": {
+      "xmin": -23.9,
+      "xmax": 23.95,
+      "ymin": -23.9,
+      "ymax": 23.9
+    },
+    "134": {
+      "xmin": -21.5,
+      "xmax": 21.6,
+      "ymin": -21.5,
+      "ymax": 21.5
+    },
+    "136": {
+      "xmin": -23.95,
+      "xmax": 23.95,
+      "ymin": -23.9,
+      "ymax": 23.9
+    },
+    "137": {
+      "xmin": -21.55,
+      "xmax": 21.55,
+      "ymin": -21.5,
+      "ymax": 21.5
+    },
+    "140": {
+      "xmin": -6.2,
+      "xmax": 13.55,
+      "ymin": -9.35,
+      "ymax": 9.35
+    },
+    "141": {
+      "xmin": -6.2,
+      "xmax": 6.25,
+      "ymin": -9.35,
+      "ymax": 9.35
+    }
+  },
+  "sounds": {
+    "2": {
+      "format": 2,
+      "sampleCount": 11025,
+      "tagBytes": 2505
+    },
+    "3": {
+      "format": 2,
+      "sampleCount": 5512,
+      "tagBytes": 1465
+    },
+    "4": {
+      "format": 2,
+      "sampleCount": 11025,
+      "tagBytes": 2505
+    },
+    "5": {
+      "format": 2,
+      "sampleCount": 18900,
+      "tagBytes": 3753
+    }
+  },
+  "fonts": {
+    "1": {
+      "name": "Mundo Sans Std Bold\u0000",
+      "tagBytes": 31000
+    },
+    "15": {
+      "name": "Mundo Sans Std\u0000",
+      "tagBytes": 4472
+    },
+    "18": {
+      "name": "Lucida Grande\u0000",
+      "tagBytes": 89
+    },
+    "19": {
+      "name": "Mundo Sans Std\u0000",
+      "tagBytes": 4841
+    },
+    "24": {
+      "name": "Lucida Grande\u0000",
+      "tagBytes": 89
+    },
+    "27": {
+      "name": "Mundo Sans Std Medium\u0000",
+      "tagBytes": 2706
+    },
+    "29": {
+      "name": "Mundo Sans Std Medium\u0000",
+      "tagBytes": 3054
+    },
+    "51": {
+      "name": "Mundo Sans Std Ultra\u0000",
+      "tagBytes": 709
+    }
+  },
+  "rootPlacements": [
+    {
+      "frame": 1,
+      "depth": 1,
+      "move": false,
+      "symbolId": 121,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 0.0,
+        "ty": 0.0
+      }
+    },
+    {
+      "frame": 1,
+      "depth": 2,
+      "move": false,
+      "symbolId": 124,
+      "matrix": {
+        "a": 0.46551513671875,
+        "b": 0,
+        "c": 0,
+        "d": 0.4655303955078125,
+        "tx": 319.9,
+        "ty": 188.6
+      }
+    },
+    {
+      "frame": 1,
+      "depth": 4,
+      "move": false,
+      "symbolId": 125,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 0.3,
+        "ty": 75.35
+      }
+    },
+    {
+      "frame": 1,
+      "depth": 5,
+      "move": false,
+      "symbolId": 126,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 488.4,
+        "ty": 75.35
+      }
+    },
+    {
+      "frame": 1,
+      "depth": 6,
+      "move": false,
+      "symbolId": 129,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 533.3,
+        "ty": 43.4
+      },
+      "name": "O"
+    },
+    {
+      "frame": 1,
+      "depth": 10,
+      "move": false,
+      "symbolId": 132,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 587.45,
+        "ty": 43.4
+      },
+      "name": "P"
+    },
+    {
+      "frame": 1,
+      "depth": 14,
+      "move": false,
+      "symbolId": 135,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 45.2,
+        "ty": 43.4
+      },
+      "name": "Q"
+    },
+    {
+      "frame": 1,
+      "depth": 18,
+      "move": false,
+      "symbolId": 138,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 99.35,
+        "ty": 43.4
+      },
+      "name": "W"
+    },
+    {
+      "frame": 1,
+      "depth": 22,
+      "move": false,
+      "symbolId": 120,
+      "matrix": {
+        "a": 0.5084075927734375,
+        "b": 0,
+        "c": 0,
+        "d": 0.5079803466796875,
+        "tx": 275.0,
+        "ty": 200.0
+      },
+      "name": "view1"
+    },
+    {
+      "frame": 1,
+      "depth": 24,
+      "move": false,
+      "symbolId": 139,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 142.05,
+        "ty": 1.0
+      }
+    },
+    {
+      "frame": 1,
+      "depth": 25,
+      "move": false,
+      "symbolId": 142,
+      "matrix": {
+        "a": 0.812835693359375,
+        "b": 0,
+        "c": 0,
+        "d": 0.812835693359375,
+        "tx": 624.4,
+        "ty": 8.75
+      },
+      "name": "Mute"
+    },
+    {
+      "frame": 1,
+      "depth": 29,
+      "move": false,
+      "symbolId": 144,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 9.45,
+        "ty": 13.75
+      },
+      "name": "Help_btn"
+    },
+    {
+      "frame": 1,
+      "depth": 31,
+      "move": false,
+      "symbolId": 60,
+      "matrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 20.4,
+        "ty": 150.55
+      },
+      "name": "pointer"
+    }
+  ],
+  "tagCounts": {
+    "69": 1,
+    "77": 1,
+    "9": 1,
+    "24": 1,
+    "86": 1,
+    "82": 1,
+    "75": 8,
+    "73": 8,
+    "88": 8,
+    "14": 4,
+    "8": 1,
+    "6": 2,
+    "2": 22,
+    "39": 53,
+    "83": 5,
+    "11": 18,
+    "74": 20,
+    "37": 2,
+    "22": 11,
+    "35": 14,
+    "20": 1,
+    "36": 3,
+    "32": 1,
+    "45": 1,
+    "26": 13,
+    "76": 1,
+    "1": 1,
+    "0": 1
+  },
+  "notes": [
+    "Matrices are local display-list transforms; translations and shape bounds are pixels, not physics units.",
+    "Symbol IDs and QWOP_fla namespace match local PNG export names; code equivalence is not yet verified.",
+    "ActionScript bytecode remains embedded in the SWF, not decompiled by this inventory.",
+    "The literal dontstealthisgame.xml is absent from this SWF; this may be a different or modified build.",
+    "No external dontstealthisgame.xml was located. Audio/font payloads remain embedded."
+  ]
+}

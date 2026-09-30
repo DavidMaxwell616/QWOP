@@ -1,0 +1,6 @@
+{
+  "name": "qwop-phaser-planck",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/athletics.test.js tests/physics.test.js" }
+}
