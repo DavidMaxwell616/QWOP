@@ -16,6 +16,7 @@ export class DemoRun {
         this.duration = this.landingTime + this.slowdownDuration;
         this.distance = 0;
         this.finished = false;
+        this.controls = { Q: false, W: false, O: false, P: false };
         this.links = runner.allJoints.map(joint => {
             const a = joint.getBodyA(), b = joint.getBodyB();
             return { a, b, anchorA: a.getLocalPoint(joint.getAnchorA()), anchorB: b.getLocalPoint(joint.getAnchorB()) };
@@ -36,6 +37,13 @@ export class DemoRun {
             : this.landingDistance + this.runSpeed * this.slowdownDuration * (u - u ** 3 + u ** 4 / 2);
         if (this.finished) this.distance = this.targetDistance;
         const phase = this.distance / this.runSpeed * Math.PI * 4;
+        // Illustrative button presses follow the same clock as the staged stride.
+        const forwardSwing = Math.cos(phase) >= 0;
+        const kneeSwing = Math.sin(phase) >= 0;
+        this.controls.Q = !this.finished && forwardSwing;
+        this.controls.W = !this.finished && !forwardSwing;
+        this.controls.O = !this.finished && kneeSwing;
+        this.controls.P = !this.finished && !kneeSwing;
         const stride = Math.sin(phase) * pace;
         const lean = -0.08 * pace;
         const angles = {

@@ -159,6 +159,10 @@ export class GameScene extends Phaser.Scene {
                     this.message.setText(`Demo complete: ${this.demo.targetDistance.toFixed(1)} metres\nR: replay demo | D: manual play`).setVisible(true);
                 }
             }
+            for (const key of ['Q', 'W', 'O', 'P']) {
+                const pressed = this.state === 'running' && this.demo.controls[key];
+                this.buttons[key].setTint(pressed ? 0xffcc66 : 0xffffff);
+            }
             this.syncView();
             this.distanceText.setText(`DEMO: ${this.score.toFixed(1)} / ${this.demo.targetDistance.toFixed(1)} m`);
             return;
