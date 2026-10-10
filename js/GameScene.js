@@ -15,6 +15,7 @@ export class GameScene extends Phaser.Scene {
     create(data = {}) {
         this.demoMode = data.demo === true;
         this.demo = null;
+        this.jumpCooldown = 0;
         this.w = 1100; this.h = 620; this.groundY = 540;
         this.bestScore = this.registry.get('best') || 0;
         this.state = 'intro'; this.accumulator = 0; this.score = 0;
@@ -119,7 +120,7 @@ export class GameScene extends Phaser.Scene {
             this.message.setText('Demo paused\nClick or press H to resume\nD: manual play').setVisible(true);
             return;
         }
-        this.message.setText('Q / W: opposing thigh and arm motion\nO / P: opposing calf motion\nReach the hurdle at 50 m and sand at 100 m\nClick or press H to resume').setVisible(true);
+        this.message.setText('Q / W: opposing thigh and arm motion\nO / P: opposing calf motion\nSpace: jump before the hurdle or sand pit\nReach the hurdle at 50 m and sand at 100 m\nClick or press H to resume').setVisible(true);
     }
     end(reason) {
         this.state = 'over'; this.runner.releaseMotors();
@@ -143,9 +144,39 @@ export class GameScene extends Phaser.Scene {
         for (const [body, w, h] of [[base, 134, 24], [top, 43, 292]]) this.obstacles.push({ body, sprite: this.add.rectangle(0, 0, w, h, 0xf0e4db) });
     }
 
+    jump() {
+        if (this.demoMode || this.state !== 'running' || this.jumpCooldown > 0) return false;
+        const grounded = [this.runner.leftFoot, this.runner.rightFoot].some(foot => {
+            for (let edge = foot.body.getContactList(); edge; edge = edge.next) {
+                if (edge.other === this.ground && edge.contact.isTouching()) return true;
+            }
+            return false;
+        });
+        if (!grounded) return false;
+        const x = m2px(this.runner.body.body.getPosition().x);
+        const nearPit = x >= this.pitX - 1300 && x < this.pitX + SAND_PIT_WIDTH;
+        const nearHurdle = x >= this.hurdleX - 1300 && x < this.hurdleX + 100;
+        const targetX = nearPit ? this.pitX + SAND_PIT_WIDTH + 300
+            : nearHurdle ? this.hurdleX + 500 : x + 600;
+        const height = nearHurdle ? 480 : 300;
+        const upSpeed = Math.sqrt(2 * WORLD_DEFAULTS.gravityY * px2m(height));
+        const flightTime = 2 * upSpeed / WORLD_DEFAULTS.gravityY;
+        const forwardSpeed = px2m(targetX - x) / flightTime;
+        // Launch the whole articulated runner together without pulling joints apart.
+        for (const part of this.runner.allParts) {
+            part.body.setLinearVelocity(pl.Vec2(forwardSpeed, -upSpeed));
+            part.body.setAngularVelocity(0);
+            part.body.setAwake(true);
+        }
+        if (nearPit) this.rules.Jumped = true;
+        this.jumpCooldown = 0.25;
+        return true;
+    }
+
     update(time, delta) {
+        const spacePressed = Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
         if (Phaser.Input.Keyboard.JustDown(this.keys.D)) { this.scene.restart({ demo: !this.demoMode }); return; }
-        if (Phaser.Input.Keyboard.JustDown(this.keys.R) || (Phaser.Input.Keyboard.JustDown(this.keys.SPACE) && this.state === 'over')) { this.scene.restart({ demo: this.demoMode }); return; }
+        if (Phaser.Input.Keyboard.JustDown(this.keys.R) || (spacePressed && this.state === 'over')) { this.scene.restart({ demo: this.demoMode }); return; }
         if (Phaser.Input.Keyboard.JustDown(this.keys.H)) this.help();
         if (this.demoMode) {
             if (this.state === 'running') {
@@ -173,6 +204,7 @@ export class GameScene extends Phaser.Scene {
             this.buttons[key].setTint(controls[key].isDown ? 0xffcc66 : 0xffffff);
         }
         if (this.state === 'intro' && Object.values(controls).some(key => key.isDown)) this.start();
+        if (spacePressed && this.state === 'running') this.jump();
         if (this.state === 'running' || (this.state === 'over' && !this.rules.pausedOnLanding)) {
             this.accumulator += Math.min(delta / 1000, 0.1);
             while (this.accumulator >= STEP && !this.rules.pausedOnLanding) {
@@ -180,6 +212,7 @@ export class GameScene extends Phaser.Scene {
                 else this.runner.updateAnkles();
                 this.runner.stabilize();
                 this.world.step(STEP, WORLD_DEFAULTS.iterations, WORLD_DEFAULTS.iterations);
+                this.jumpCooldown = Math.max(0, this.jumpCooldown - STEP);
                 this.rules.timeElapsed += STEP;
                 this.accumulator -= STEP;
                 this.rules.everyFrame(this.runner.body.body.getWorldCenter().x, this.runner.head.body.getLinearVelocity().x);

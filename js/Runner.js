@@ -248,6 +248,52 @@ export class Runner {
         // Render above track markers (depth 1), preserving limb creation order.
         for (const part of this.allParts) part.sprite.setDepth(2);
         this.allJoints = Object.values(this.joints);
+        this.setStartingPose(scene.groundY ?? h / 2 + 230);
+        this.syncSprites();
+    }
+
+    setStartingPose(groundY) {
+        // Match assets/images/Qwop.webp. Pose the existing joint chain so its
+        // anatomical zero angles (especially the straight knee stops) survive.
+        const angles = {
+            body: 0.25, pelvis: 0.05, head: 0.15,
+            leftThigh: -0.30, leftLeg: 0.05, leftFoot: 0,
+            rightThigh: 0.25, rightLeg: 0.80, rightFoot: 0.20,
+            upperLeftArm: -0.85, lowerLeftArm: -2.40,
+            upperRightArm: 1.00, lowerRightArm: -0.15
+        };
+        const links = this.allJoints.map(joint => ({
+            a: joint.getBodyA(), b: joint.getBodyB(),
+            localA: joint.getBodyA().getLocalPoint(joint.getAnchorA()),
+            localB: joint.getBodyB().getLocalPoint(joint.getAnchorB())
+        }));
+        const bodyAngles = new Map(Object.entries(this.parts).map(([name, part]) => [part.body, angles[name]]));
+        const root = this.body.body;
+        root.setTransform(root.getPosition(), angles.body);
+        const placed = new Set([root]);
+        const queue = [root];
+        for (const parent of queue) {
+            for (const link of links) {
+                if (link.a !== parent && link.b !== parent) continue;
+                const child = link.a === parent ? link.b : link.a;
+                if (placed.has(child)) continue;
+                const local = link.a === parent ? link.localB : link.localA;
+                const anchor = parent.getWorldPoint(link.a === parent ? link.localA : link.localB);
+                const angle = bodyAngles.get(child);
+                const c = Math.cos(angle), s = Math.sin(angle);
+                child.setTransform(pl.Vec2(anchor.x - c * local.x + s * local.y,
+                    anchor.y - s * local.x - c * local.y), angle);
+                placed.add(child);
+                queue.push(child);
+            }
+        }
+        const bottom = Math.max(...[this.leftFoot, this.rightFoot].flatMap(foot =>
+            foot.fix.getShape().m_vertices.map(vertex => foot.body.getWorldPoint(vertex).y)));
+        const dy = px2m(groundY) - bottom;
+        for (const part of this.allParts) {
+            const p = part.body.getPosition();
+            part.body.setTransform(pl.Vec2(p.x, p.y + dy), part.body.getAngle());
+        }
     }
 
     makePartRect(key, xPx, yPx, wPx, hPx, density = 1.0, friction = 0.2, restitution = 0) {

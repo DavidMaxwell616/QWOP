@@ -30,6 +30,45 @@ test('Planck scene: controls, contact scoring, ragdoll, reset and hurdle filters
     scene.create();
     scene.start();
     const keys = pressed => Object.fromEntries(['Q', 'W', 'O', 'P'].map(k => [k, { isDown: pressed.includes(k) }]));
+    // Space launches only from the track, and cannot be repeated in the air.
+    for (const obstacle of ['hurdle', 'pit']) {
+        scene.create();
+        scene.start();
+        const startX = obstacle === 'hurdle' ? scene.hurdleX - 700 : scene.pitX - 200;
+        for (const part of scene.runner.allParts) {
+            const p = part.body.getPosition();
+            part.body.setTransform(planck.Vec2(p.x + startX / PPM, p.y), part.body.getAngle());
+        }
+        scene.world.step(0.025, 10, 10);
+        assert.equal(scene.jump(), true, `${obstacle}: grounded jump accepted`);
+        assert.equal(scene.jump(), false, 'Repeated jump must be blocked');
+        let cleared = false;
+        for (let i = 0; i < 180 && scene.state === 'running'; i++) {
+            scene.update(i * 25, 25);
+            const x = scene.runner.body.body.getPosition().x * PPM;
+            if (i === 20) assert.equal(scene.jump(), false, 'Airborne jump must be blocked after cooldown');
+            if (obstacle === 'hurdle') {
+                for (const part of scene.runner.allParts) {
+                    for (let edge = part.body.getContactList(); edge; edge = edge.next) {
+                        assert(!edge.contact.isTouching() || !scene.obstacles.some(item => item.body === edge.other),
+                            'Jump must clear the hurdle without hitting it');
+                    }
+                }
+            } else if (x >= scene.pitX && x <= scene.pitX + SAND_PIT_WIDTH) {
+                const bottom = Math.max(...[scene.runner.leftFoot, scene.runner.rightFoot].flatMap(foot =>
+                    foot.fix.getShape().m_vertices.map(vertex => foot.body.getWorldPoint(vertex).y * PPM)));
+                assert(bottom < scene.groundY, 'Feet must stay above the sand pit');
+            }
+            const edge = obstacle === 'hurdle' ? scene.hurdleX + 100 : scene.pitX + SAND_PIT_WIDTH;
+            if (x > edge) {
+                cleared = true;
+                break;
+            }
+        }
+        assert(cleared, `${obstacle}: jump must carry the runner beyond the obstacle`);
+    }
+    scene.create();
+    scene.start();
     scene.runner.updateControls(keys('QWOP'));
     assert.equal(scene.runner.joints.leftHipLeg.getMotorSpeed(), -3);
     assert.equal(scene.runner.joints.leftHipLeg.getLowerLimit(), -0.35);
@@ -137,12 +176,17 @@ test('Planck scene: controls, contact scoring, ragdoll, reset and hurdle filters
     for (const [name, joint] of Object.entries(scene.runner.joints)) {
         if (!['hipBack', 'leftHipLeg', 'rightHipLeg'].includes(name)) scene.world.destroyJoint(joint);
     }
-    for (const part of [scene.runner.leftThigh, scene.runner.rightThigh]) {
-        part.body.setTransform(part.body.getPosition(), Math.PI / 2);
-        part.body.setType('static');
+    for (const joint of [scene.runner.joints.leftHipLeg, scene.runner.joints.rightHipLeg]) {
+        const body = joint.getBodyB();
+        const local = body.getLocalPoint(joint.getAnchorB());
+        const anchor = joint.getAnchorA();
+        // Rotate around the shared hip; the starting stance staggers the legs.
+        body.setTransform(planck.Vec2(anchor.x + local.y, anchor.y - local.x), Math.PI / 2);
+        body.setType('static');
     }
     for (let i = 0; i < 1200; i++) scene.world.step(0.025, 10, 10);
-    assert(Math.abs(scene.runner.body.body.getAngle() - Math.PI / 2) < 0.4,
+    const torsoError = scene.runner.body.body.getAngle() - Math.PI / 2;
+    assert(Math.abs(Math.atan2(Math.sin(torsoError), Math.cos(torsoError))) < 0.4,
         'Torso must follow horizontal legs, including after a fall');
 
     // Drive each actual runner knee against its straight stop, then backward.
